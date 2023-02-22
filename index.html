@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simplify Polynomial</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+<body>
+<div class="container justify-content-center">
+    <div class="col-md-12">
+        <h1>Interpolation of function using Lagrange method</h1>
+        <p>Enter initial dots:</p>
+    </div>
+    <form id="inputForm" class="col-md-12" novalidate>
+        <table id="inputTable" class="table">
+            <thead>
+            <tr>
+                <th>X</th>
+                <th>Y</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="text" name="x[]" class="form-control" required></td>
+                <td><input type="text" name="y[]" class="form-control" required></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="x[]" class="form-control" required></td>
+                <td><input type="text" name="y[]" class="form-control" required></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="buttons">
+            <button type="button" class="btn tableBtn btn-success " id="add-row-btn">+</button>
+            <button type="button" class="btn tableBtn btn-danger" id="remove-row-btn">-</button>
+        </div>
+        <div class="buttons">
+            <button type="button" class="btn btn-primary"
+                    onclick="simplifyPolynomial()">Calculate
+            </button>
+        </div>
+    </form>
+    <hr>
+    <div class="col-md-12">
+        <h4>Result:</h4>
+        <p id="output"></p>
+    </div>
+    <div class="col-md-12 justify-content-center">
+        <div class="col-md-12 chart">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/lagrange.js"></script>
+<script src="js/main.js"></script>
+<script>
+
+</script>
+</body>
+</html>
