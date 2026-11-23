@@ -1,0 +1,20 @@
+@media screen { #print-report { display: none !important; } }
+@media print {
+    @page { size: A4 portrait; margin: 14mm 16mm; }
+    html, body { color-scheme: light !important; background: white !important; margin: 0 !important; padding: 0 !important; }
+    body > .app-shell { display: none !important; }
+    body > #print-report { display: block !important; }
+    #print-report { background: white !important; color: #162033; font-family: Arial, "Segoe UI", sans-serif; font-size: 10pt; line-height: 1.5; }
+    #print-report h1 { font-size: 22pt; margin: 4px 0 3px; font-weight: 750; }
+    #print-report h2 { font-size: 12pt; margin: 18px 0 7px; border-bottom: 1px solid #dce2ec; padding-bottom: 4px; break-after: avoid; }
+    #print-report p { margin: 4px 0 10px; background: transparent; color: #334155; }
+    #print-report .print-kicker { color: #4f46e5; font-size: 9pt; text-transform: uppercase; letter-spacing: .08em; font-weight: bold; }
+    #print-date { font-size: 9pt; color: #667085 !important; }
+    .report-points { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    .report-points th { background: #f4f6fa; font-weight: 700; }
+    .report-points th, .report-points td { border: 1px solid #d9e0ea; padding: 5px 9px; text-align: left; }
+    #print-report .report-formula { background: #f6f5ff; padding: 14px; border: 1px solid #dddaf9; border-radius: 7px; font-size: 15pt; overflow-wrap: anywhere; font-weight: bold; }
+    #print-chart { display: block; width: 100%; max-width: 145mm; max-height: 85mm; margin: 10px auto; object-fit: contain; page-break-inside: avoid; }
+    #print-report .print-footer { border-top: 1px solid #d9e0ea; margin-top: 20px; padding-top: 7px; font-size: 9pt; color: #64748b; }
+    #print-report h2, #print-report .report-formula, #print-report table, #print-chart { break-inside: avoid; }
+}
