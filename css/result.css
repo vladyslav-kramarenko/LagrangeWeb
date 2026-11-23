@@ -1,0 +1,21 @@
+.result-shell { max-width: 940px; }
+.result-shell .eyebrow { margin: 25px 0 15px; }
+.result-share-panel { padding: 30px; }
+#result-content[hidden], #result-error[hidden] { display: none !important; }
+.result-share-panel .formula-card { margin: 0; }
+.result-chart-heading { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 26px 0 14px; }
+.result-chart-heading h2 { font-size: 18px; font-weight: 700; margin: 0; }
+.result-chart-heading p { font-size: 13px; margin: 0; color: var(--muted); }
+.result-canvas-box { width: 100%; height: clamp(300px, 46vw, 440px); border: 1px solid var(--line); border-radius: 12px; background: #fcfdff; padding: 15px; }
+.result-canvas-box canvas { width: 100% !important; height: 100% !important; }
+.result-controls { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 20px; }
+.result-controls .calculate-btn, .result-controls .print-report-btn { margin: 0; min-height: 48px; padding: 9px 10px; width: 100%; }
+.result-privacy { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 15px 0 2px; }
+#share-status { min-height: 18px; color: var(--accent); font-size: 13px; margin: 8px 0 0; }
+html[data-theme="dark"] .result-canvas-box { background: #151f30; border-color: #2c3a50; }
+@media (max-width: 680px) {
+    .result-share-panel { padding: 22px 18px; }
+    .result-controls { grid-template-columns: 1fr; }
+    .result-canvas-box { height: 340px; padding: 8px; }
+    .result-shell .eyebrow { margin-top: 24px; }
+}
