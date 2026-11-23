@@ -1,0 +1,10 @@
+**/.git
+**/.DS_Store
+**/node_modules
+**/.env
+**/.env.*
+**/.dev.vars*
+wrangler.jsonc
+README.md
+LICENSE.md
+.assetsignore
