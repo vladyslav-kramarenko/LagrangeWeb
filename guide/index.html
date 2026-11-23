@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/theme.css">
     <link rel="stylesheet" href="../css/guide.css">
+    <link rel="stylesheet" href="../css/app-extras.css">
     <script>
         (() => {
             let preference = 'system';
@@ -24,40 +25,49 @@
 <main class="app-shell guide-shell">
     <header class="app-header guide-header">
         <div class="app-toolbar">
-            <a class="breadcrumb-link" href="/">← Back to calculator</a>
+            <a class="breadcrumb-link" href="/" data-i18n="backToCalc">← Back to calculator</a>
+            <label class="language-control" for="language-select">
+                <span aria-hidden="true">🌐</span>
+                <span class="visually-hidden">Language</span>
+                <select id="language-select" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                    <option value="fr">Français</option>
+                </select>
+            </label>
             <label class="theme-control" for="theme-select">
                 <span class="theme-icon" aria-hidden="true">◐</span>
                 <span class="visually-hidden">Appearance</span>
                 <select id="theme-select" aria-label="Appearance">
-                    <option value="system">System theme</option>
-                    <option value="light">Light theme</option>
-                    <option value="dark">Dark theme</option>
+                    <option value="system" data-i18n="themeSystem">System theme</option>
+                    <option value="light" data-i18n="themeLight">Light theme</option>
+                    <option value="dark" data-i18n="themeDark">Dark theme</option>
                 </select>
             </label>
         </div>
-        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Learning guide</div>
-        <h1>How Lagrange polynomial interpolation works</h1>
-        <p>Learn how to build a polynomial from known points, understand the formula, and try a complete example.</p>
+        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> <span data-i18n="learningGuide">Learning guide</span></div>
+        <h1 data-i18n="guideTitle">How Lagrange polynomial interpolation works</h1>
+        <p data-i18n="guideIntro">Learn how to build a polynomial from known points, understand the formula, and try a complete example.</p>
     </header>
 
     <article class="guide-article">
         <nav class="guide-toc" aria-label="On this page">
-            <strong>On this page</strong>
-            <a href="#method">The method</a>
-            <a href="#formula">The formula</a>
-            <a href="#example">Worked example</a>
-            <a href="#calculator">Use the calculator</a>
-            <a href="#questions">FAQ</a>
+            <strong data-i18n="onThisPage">On this page</strong>
+            <a href="#method" data-i18n="methodNav">The method</a>
+            <a href="#formula" data-i18n="formulaNav">The formula</a>
+            <a href="#example" data-i18n="exampleNav">Worked example</a>
+            <a href="#calculator" data-i18n="calcNav">Use the calculator</a>
+            <a href="#questions" data-i18n="faqNav">FAQ</a>
         </nav>
 
-        <section id="method" class="guide-section">
+        <section id="method" class="guide-section" data-i18n-html="guideMethod">
             <div class="section-label">01 / OVERVIEW</div>
             <h2>What is Lagrange interpolation?</h2>
             <p>Lagrange polynomial interpolation finds a polynomial that passes exactly through the data points you supply. If there are <strong>n + 1</strong> points with distinct X coordinates, there is exactly one interpolating polynomial of degree at most <strong>n</strong>.</p>
             <p>Unlike polynomial regression, interpolation matches the input values at every supplied X coordinate. That makes it useful when you want to reconstruct a curve from known measurements or understand interpolation in numerical methods.</p>
         </section>
 
-        <section id="formula" class="guide-section">
+        <section id="formula" class="guide-section" data-i18n-html="guideFormula">
             <div class="section-label">02 / FORMULA</div>
             <h2>The Lagrange interpolation formula</h2>
             <p>For points (x₀, y₀), (x₁, y₁), …, (xₙ, yₙ), write the polynomial as a weighted sum of basis polynomials:</p>
@@ -67,7 +77,7 @@
             <p>Multiplying each basis polynomial by its Y value and adding the terms creates the final interpolation polynomial.</p>
         </section>
 
-        <section id="example" class="guide-section">
+        <section id="example" class="guide-section" data-i18n-html="guideExample">
             <div class="section-label">03 / WORKED EXAMPLE</div>
             <h2>Example: interpolate three points</h2>
             <p>Suppose you want a polynomial through these coordinates:</p>
@@ -93,7 +103,7 @@
             <p>Check the inputs: P(1) = 2, P(2) = 5, and P(3) = 10. The polynomial passes through all three points.</p>
         </section>
 
-        <section id="calculator" class="guide-section">
+        <section id="calculator" class="guide-section" data-i18n-html="guideCalculator">
             <div class="section-label">04 / TRY IT</div>
             <h2>How to use the calculator</h2>
             <ol class="guide-steps">
@@ -106,7 +116,7 @@
             <a href="/" class="guide-cta">Open the calculator <span aria-hidden="true">→</span></a>
         </section>
 
-        <section id="questions" class="guide-section">
+        <section id="questions" class="guide-section" data-i18n-html="guideQuestions">
             <div class="section-label">05 / FAQ</div>
             <h2>Frequently asked questions</h2>
             <div class="faq-item"><h3>How many points do I need?</h3><p>Two distinct X coordinates define a line. Three points define a polynomial of degree at most two, four points of degree at most three, and so on.</p></div>
@@ -115,9 +125,10 @@
             <div class="faq-item"><h3>Can I use negative or decimal values?</h3><p>Yes. The X and Y coordinates can be negative or decimal numbers. For very many points or extreme values, floating-point rounding may affect numerical accuracy.</p></div>
         </section>
     </article>
-    <footer class="app-footer"><a href="/">Lagrange calculator</a> · Polynomial interpolation guide</footer>
+    <footer class="app-footer"><a href="/" data-i18n="calcFooter">Lagrange calculator</a> · <span data-i18n="guideFooter">Polynomial interpolation guide</span></footer>
 </main>
 <script src="../js/theme.js"></script>
 <script src="../js/analytics.js"></script>
+<script src="../js/i18n.js"></script>
 </body>
 </html>
