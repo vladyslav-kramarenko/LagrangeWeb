@@ -1,92 +1,88 @@
+:root {
+    color-scheme: light;
+    --ink: #17243b;
+    --muted: #64748b;
+    --line: #e4eaf2;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --surface: #ffffff;
+    --canvas: #f5f7fb;
+}
+* { box-sizing: border-box; }
 body {
-    background-image: url('../img/bg.jpg');
-    background-size: cover;
-    text-align: center;
-    font-family: "Times New Roman";
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 4% 0%, #ebefff 0, transparent 36%), var(--canvas);
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
 }
-
-h1 {
-    font-weight: 400;
-    font-size: 30px;
-    border-radius: 5px;
-    background-color: white;
-    margin-bottom: 20px;
-    margin-top: 10px;
+.app-shell { width: min(1140px, 100%); margin: 0 auto; padding: 62px 28px 30px; }
+.app-header { margin: 0 0 34px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 15px; color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; }
+.eyebrow-dot { display: inline-block; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 0 4px #e9e7ff; }
+.app-header h1 { margin: 0 0 11px; font-size: clamp(32px, 4.1vw, 48px); font-weight: 730; line-height: 1.12; letter-spacing: -.045em; }
+.app-header p { margin: 0; max-width: 650px; color: var(--muted); font-size: 16px; line-height: 1.65; }
+.workspace { display: grid; grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); gap: 22px; align-items: stretch; }
+.panel { min-width: 0; padding: 30px; border: 1px solid #e8edf4; border-radius: 20px; background: var(--surface); box-shadow: 0 14px 42px rgba(26, 39, 73, .045), 0 1px 3px rgba(26, 39, 73, .025); }
+.panel-heading { display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+.section-label { margin-bottom: 7px; font-size: 11px; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.panel-heading h2 { margin: 0; font-size: 23px; font-weight: 700; letter-spacing: -.025em; line-height: 1.25; }
+.panel-caption { margin-bottom: 3px; white-space: nowrap; font-size: 12px; color: #7b8799; }
+.panel-description { margin: 12px 0 23px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+.points-table { margin: 0; width: 100%; border-collapse: separate; border-spacing: 0 10px; table-layout: fixed; }
+.points-table th { padding: 0 7px 3px; font-size: 12px; color: #65758b; font-weight: 650; text-align: left; letter-spacing: .02em; }
+.points-table td { padding: 0 7px; }
+.points-table th:first-child, .points-table td:first-child { padding-left: 0; }
+.points-table th:last-child, .points-table td:last-child { padding-right: 0; }
+.points-table .form-control { display: block; width: 100%; min-height: 48px; padding: 11px 13px; background: #fafbfe; border: 1px solid #dce3ed; border-radius: 10px; color: var(--ink); font: inherit; font-size: 15px; box-shadow: none; transition: border-color .18s ease, box-shadow .18s ease, background .18s ease; }
+.points-table .form-control::placeholder { color: #a5adbd; }
+.points-table .form-control:focus { background: #fff; border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(79,70,229,.11); }
+.points-table tr.duplicate .form-control { background: #fff5f5; border-color: #f87171; }
+.point-actions { display: flex; gap: 9px; margin-top: 11px; }
+.action-btn { flex: 1; min-height: 43px; padding: 8px 10px; border: 1px solid #dce3ed; border-radius: 10px; background: white; color: #45556f; font: inherit; font-size: 13px; font-weight: 650; cursor: pointer; transition: border-color .18s ease, background .18s ease; }
+.action-btn:hover { background: #f7f8ff; border-color: #b6bdfd; }
+.action-btn:focus-visible, .calculate-btn:focus-visible { outline: 3px solid rgba(79,70,229,.32); outline-offset: 2px; }
+.action-symbol { display: inline-block; margin-right: 5px; font-size: 20px; line-height: 12px; vertical-align: -1px; font-weight: 400; }
+.calculate-btn { display: flex; width: 100%; min-height: 49px; justify-content: center; align-items: center; gap: 12px; margin-top: 24px; border: 0; border-radius: 11px; background: var(--accent); color: white; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: background .18s ease, transform .18s ease; }
+.calculate-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.calculate-btn span { font-size: 20px; font-weight: 400; }
+.formula-card { border: 1px solid #e6e7ff; border-radius: 12px; background: #f7f7ff; padding: 19px 21px; min-height: 96px; }
+.formula-title { color: #6b70a0; font-weight: 750; font-size: 11px; letter-spacing: .1em; }
+.formula-line { margin-top: 10px; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.55; overflow-wrap: anywhere; }
+.function-name { color: var(--accent); font-weight: 700; white-space: nowrap; margin-right: 4px; }
+#output { font-weight: 550; letter-spacing: -.025em; }
+.plot-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 26px 0 14px; }
+.plot-heading h3 { margin: 0; font-size: 15px; font-weight: 700; }
+.plot-heading span { font-size: 12px; color: #8490a3; }
+.chart-area { position: relative; width: 100%; height: 290px; background: #fcfdff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; padding: 14px; }
+.chart-area canvas { width: 100% !important; height: 100% !important; }
+.chart-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fcfdff; text-align: center; }
+.placeholder-icon { width: 66px; height: 66px; color: #8b87e8; margin-bottom: 12px; }
+.placeholder-icon svg { width: 100%; height: 100%; }
+.chart-placeholder p { margin: 0 0 3px; font-size: 14px; color: #475569; font-weight: 650; }
+.chart-placeholder span { font-size: 12px; color: #93a0b1; }
+.has-results .chart-placeholder { display: none; }
+.app-footer { margin-top: 26px; color: #9ba7b8; font-size: 12px; text-align: center; }
+@media (max-width: 800px) {
+    .app-shell { padding: 36px 20px 24px; }
+    .workspace { grid-template-columns: 1fr; gap: 16px; }
+    .app-header { margin-bottom: 25px; }
+    .panel { padding: 24px; }
+    .chart-area { height: 305px; }
 }
-
-
-span{
-    background-color: rgba(255, 255, 255, 0.8);
+@media (max-width: 420px) {
+    .app-shell { padding: 28px 14px 18px; }
+    .app-header h1 { font-size: 32px; }
+    .app-header p { font-size: 14px; }
+    .panel { padding: 19px 16px; border-radius: 16px; }
+    .panel-heading h2 { font-size: 21px; }
+    .panel-caption { font-size: 11px; }
+    .point-actions { gap: 8px; }
+    .action-btn { font-size: 12px; }
+    .formula-card { padding: 16px; }
+    .chart-area { height: 260px; }
+    .plot-heading span { font-size: 11px; }
 }
-
-h4 {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 6px;
-}
-
-table {
-    border: 1px solid white;
-    line-height: 15px;
-    width: 80%;
-}
-
-p {
-    background-color: rgba(255, 255, 255, 0.8);
-    font-size: 20px;
-    padding: 6px;
-    border-radius: 5px;
-    background-color: white;
-    margin-bottom: 20px;
-}
-
-.buttons {
-    width: 100%;
-    text-align: center;
-}
-
-
-.tableBtn {
-    width: 39%;
-    margin-left: 5%;
-    margin-right: 5%;
-    margin-bottom: 20px;
-}
-
-hr {
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-table thead {
-    background-color: rgba(255, 255, 255, 0.8);
-}
-
-.btn-primary {
-    width: 39%;
-}
-
-.chart {
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-.container {
-    /*background-color: rgba(255, 255, 255, 0.9);*/
-    background-color: rgba(0, 0, 0, 0.7);
-    padding-top: 10px;
-}
-
-.duplicate {
-    background-color: red;
-}
-
-table {
-    margin-top: 1rem;
-}
-
-table th {
-    text-align: center;
-}
-
-table td input {
-    width: 100%;
-}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
