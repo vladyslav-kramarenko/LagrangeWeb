@@ -10,8 +10,8 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     const lagrangeFunction = {
         label: 'Polynomial Function',
         data: [],
-        borderColor: 'blue',
-        borderWidth: 1,
+        borderColor: '#4f46e5',
+        borderWidth: 2,
         pointRadius: 0.5
     }
 
@@ -25,7 +25,7 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     const userPoints = {
         label: 'Points',
         data: userPointsMap,
-        borderColor: 'red',
+        borderColor: '#f97316',
         borderWidth: 1,
         pointRadius: 5,
         fill: false
@@ -53,6 +53,8 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     };
 
     const options = {
+        responsive: true,
+        maintainAspectRatio: false,
         scales: {
             x: {
                 type: 'linear',
