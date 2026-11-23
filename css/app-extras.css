@@ -52,3 +52,38 @@ html[data-theme="dark"] .print-report-btn { border-color: #35445b; }
     .number-field .form-control { padding-left: 10px; padding-right: 43px; }
     .sign-toggle { right: 3px; width: 35px; height: 35px; }
 }
+
+/* Keep the guide header stable on narrow phones and with longer translations. */
+.guide-header .app-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto auto;
+    align-items: center;
+    justify-content: initial;
+    gap: 9px;
+}
+.guide-header .breadcrumb-link { min-width: 0; line-height: 1.35; overflow-wrap: anywhere; }
+.guide-header .language-control, .guide-header .theme-control { min-width: 0; }
+.guide-header .theme-control select { max-width: 116px; }
+@media (max-width: 720px) {
+    .guide-header .app-toolbar { grid-template-columns: minmax(0, 1fr) auto; }
+    .guide-header .breadcrumb-link { grid-column: 1 / -1; justify-self: start; padding-bottom: 3px; }
+    .guide-header .language-control { grid-column: 1; justify-self: end; }
+    .guide-header .theme-control { grid-column: 2; justify-self: end; }
+}
+@media (max-width: 420px) {
+    .guide-header .language-control { height: 36px; }
+    .guide-header .theme-control { height: 36px; }
+}
+.result-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.result-actions .print-report-btn, .result-actions .share-view-btn { margin: 0; flex: 1 1 180px; }
+.share-view-btn {
+    display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+    min-height: 46px; padding: 10px 13px; text-align: center;
+    border: 1px solid #b6b0f0; border-radius: 10px;
+    background: #f1f0ff; color: #4036bd; font-size: 14px; font-weight: 700;
+    text-decoration: none;
+}
+.share-view-btn:hover { background: #eae8ff; color: #3327b9; }
+.share-view-btn[hidden] { display: none !important; }
+html[data-theme="dark"] .share-view-btn { background: #29274f; border-color: #5a53a4; color: #d4d0ff; }
+html[data-theme="dark"] .share-view-btn:hover { background: #373265; }
