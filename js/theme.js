@@ -1,51 +1,72 @@
+// Shared theme controller for calculator, guide and result pages.
+// Never let chart rendering prevent a user from changing appearance.
 (() => {
     const root = document.documentElement;
     const selector = document.getElementById('theme-select');
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (!selector) return;
+
     const storageKey = 'lagrange-theme';
+    const supported = new Set(['system', 'light', 'dark']);
+    const systemTheme = window.matchMedia
+        ? window.matchMedia('(prefers-color-scheme: dark)')
+        : { matches: false };
     const compactTheme = document.getElementById('theme-current');
     const compactIcon = document.getElementById('theme-current-icon');
-    const compactLabels = {
+    const labels = {
         en: { system: 'Auto', light: 'Light', dark: 'Dark' },
         ru: { system: 'Авто', light: 'Свет', dark: 'Тёмн' },
         fr: { system: 'Auto', light: 'Clair', dark: 'Sombre' },
         uk: { system: 'Авто', light: 'Світла', dark: 'Темна' },
         de: { system: 'Auto', light: 'Hell', dark: 'Dunkel' }
     };
-    function updateCompactLabel(preference) {
-        const language = document.documentElement.lang || 'en';
-        const translations = compactLabels[language] || compactLabels.en;
-        if (compactTheme) compactTheme.textContent = translations[preference] || translations.system;
-        if (compactIcon) compactIcon.textContent = {system: '◐', light: '☀', dark: '☾'}[preference] || '◐';
-    }
 
     function savedPreference() {
         try {
-            const stored = localStorage.getItem(storageKey);
-            return ['system', 'light', 'dark'].includes(stored) ? stored : 'system';
+            const value = localStorage.getItem(storageKey);
+            return supported.has(value) ? value : 'system';
         } catch (_) {
             return 'system';
         }
     }
 
-    function applyTheme(preference) {
-        const dark = preference === 'dark' || (preference === 'system' && systemTheme.matches);
-        root.dataset.theme = dark ? 'dark' : 'light';
-        updateCompactLabel(preference);
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#0b1320' : '#f5f7fb');
-        if (typeof window.updateChartTheme === 'function') {
-            window.updateChartTheme();
+    function updateCompactLabel(preference) {
+        const language = document.documentElement.lang || 'en';
+        const dictionary = labels[language] || labels.en;
+        if (compactTheme) compactTheme.textContent = dictionary[preference];
+        if (compactIcon) {
+            compactIcon.textContent = { system: '◐', light: '☀', dark: '☾' }[preference];
+        }
+        selector.setAttribute('aria-label', 'Appearance: ' + dictionary[preference]);
+    }
+
+    function applyTheme(preference, updateChart = true) {
+        const next = supported.has(preference) ? preference : 'system';
+        const dark = next === 'dark' || (next === 'system' && systemTheme.matches);
+        const effective = dark ? 'dark' : 'light';
+        root.setAttribute('data-theme', effective);
+        root.style.colorScheme = effective;
+        selector.value = next;
+        updateCompactLabel(next);
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.setAttribute('content', dark ? '#0b1320' : '#f5f7fb');
+        // Chart updates must never break the selector or the page theme.
+        if (updateChart && typeof window.updateChartTheme === 'function') {
+            try { window.updateChartTheme(); } catch (error) {
+                console.warn('Graph appearance could not be updated', error);
+            }
         }
     }
 
+    function onSelection() {
+        const preference = supported.has(selector.value) ? selector.value : 'system';
+        try { localStorage.setItem(storageKey, preference); } catch (_) {}
+        applyTheme(preference);
+    }
+
+    // Attach handlers before any graph operation or other initialization.
+    selector.addEventListener('input', onSelection);
+    selector.addEventListener('change', onSelection);
     window.addEventListener('languagechange', () => updateCompactLabel(selector.value));
-    selector.value = savedPreference();
-    applyTheme(selector.value);
-    selector.addEventListener('change', () => {
-        const next = selector.value;
-        try { localStorage.setItem(storageKey, next); } catch (_) {}
-        applyTheme(next);
-    });
 
     const onSystemChange = () => {
         if (selector.value === 'system') applyTheme('system');
@@ -54,5 +75,15 @@
         systemTheme.addEventListener('change', onSystemChange);
     } else if (typeof systemTheme.addListener === 'function') {
         systemTheme.addListener(onSystemChange);
+    }
+
+    applyTheme(savedPreference(), false);
+    // Synchronize an already drawn graph when the browser finishes the first frame.
+    if (typeof window.requestAnimationFrame === 'function') {
+        window.requestAnimationFrame(() => {
+            if (typeof window.updateChartTheme === 'function') {
+                try { window.updateChartTheme(); } catch (_) {}
+            }
+        });
     }
 })();
