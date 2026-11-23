@@ -100,7 +100,7 @@ function convertPolynomialToString(polynomial) {
             }
         }
     }
-    return out;
+    return out || "0";
 }
 
 
@@ -119,5 +119,3 @@ function test() {
 
     console.log(convertPolynomialToString(simplifyPolynomialFunc(x, y)));
 }
-
-test();
