@@ -62,3 +62,13 @@ The `master` branch and the existing production domain are not changed by this d
 - `js/analytics.js` sends GA4 page views only from `lagrange.kramarenko.info`; calculator events contain only the number of points, never their values.
 
 Do not switch the public domain until the deployed production HTML and response headers have been verified. The dev branch uses its own Worker and must not replace the production domain directly.
+
+## Localization and sharing (DEV)
+
+The site supports English, Russian, French, Ukrainian, and German on the calculator, guide, and shareable result page. The first supported entry in `navigator.languages` is selected for new visitors, otherwise English. A manually chosen language is stored locally and takes precedence on later visits.
+
+After calculating up to 24 distinct points, the calculator offers `Open graph & formula`. This opens `/result/?p=...`, where anyone with the link can reconstruct the numeric points and polynomial. This client-side result page has `noindex` and is not in the sitemap. The result page includes high-resolution PNG export, link copying, and native sharing.
+
+The printable PDF workflow remains available on the calculator. Point coordinates stay in the local browser except when a visitor chooses to share the result URL. The GA4 implementation strips URL query parameters to avoid recording shared coordinates.
+
+On narrow screens, the guide and result page put navigation on its own row above language and theme selectors.
