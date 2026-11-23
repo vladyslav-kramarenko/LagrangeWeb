@@ -42,3 +42,12 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 ## Acknowledgments
 This project uses the Chart.js library for chart visualization.
 Special thanks to anyone who contributed to this project.
+
+## Cloudflare development deployment
+
+The `dev` branch deploys to the `lagrangeweb-dev` Cloudflare Worker after a Git push.
+Development URL: https://lagrangeweb-dev.kramarenko-vladyslav-92.workers.dev/
+
+This is a static HTML/CSS/JavaScript application; there is no build step.
+The Worker configuration for development is in `wrangler.jsonc` on this branch.
+The `master` branch and the existing production domain are not changed by this dev setup.
