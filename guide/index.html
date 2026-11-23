@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="Learn Lagrange polynomial interpolation step by step. See the formula, a worked example with three points, and answers to common questions.">
+    <link rel="canonical" href="https://lagrange.kramarenko.info/guide/">
+    <title>Lagrange Interpolation: Formula & Worked Example | Guide</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/guide.css">
+    <script>
+        (() => {
+            let preference = 'system';
+            try { preference = localStorage.getItem('lagrange-theme') || 'system'; } catch (_) {}
+            const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = preference === 'dark' || (preference !== 'light' && systemIsDark) ? 'dark' : 'light';
+        })();
+    </script>
+</head>
+<body>
+<main class="app-shell guide-shell">
+    <header class="app-header guide-header">
+        <div class="app-toolbar">
+            <a class="breadcrumb-link" href="/">← Back to calculator</a>
+            <label class="theme-control" for="theme-select">
+                <span class="theme-icon" aria-hidden="true">◐</span>
+                <span class="visually-hidden">Appearance</span>
+                <select id="theme-select" aria-label="Appearance">
+                    <option value="system">System theme</option>
+                    <option value="light">Light theme</option>
+                    <option value="dark">Dark theme</option>
+                </select>
+            </label>
+        </div>
+        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Learning guide</div>
+        <h1>How Lagrange polynomial interpolation works</h1>
+        <p>Learn how to build a polynomial from known points, understand the formula, and try a complete example.</p>
+    </header>
+
+    <article class="guide-article">
+        <nav class="guide-toc" aria-label="On this page">
+            <strong>On this page</strong>
+            <a href="#method">The method</a>
+            <a href="#formula">The formula</a>
+            <a href="#example">Worked example</a>
+            <a href="#calculator">Use the calculator</a>
+            <a href="#questions">FAQ</a>
+        </nav>
+
+        <section id="method" class="guide-section">
+            <div class="section-label">01 / OVERVIEW</div>
+            <h2>What is Lagrange interpolation?</h2>
+            <p>Lagrange polynomial interpolation finds a polynomial that passes exactly through the data points you supply. If there are <strong>n + 1</strong> points with distinct X coordinates, there is exactly one interpolating polynomial of degree at most <strong>n</strong>.</p>
+            <p>Unlike polynomial regression, interpolation matches the input values at every supplied X coordinate. That makes it useful when you want to reconstruct a curve from known measurements or understand interpolation in numerical methods.</p>
+        </section>
+
+        <section id="formula" class="guide-section">
+            <div class="section-label">02 / FORMULA</div>
+            <h2>The Lagrange interpolation formula</h2>
+            <p>For points (x₀, y₀), (x₁, y₁), …, (xₙ, yₙ), write the polynomial as a weighted sum of basis polynomials:</p>
+            <div class="math-card"><div class="math-label">INTERPOLATING POLYNOMIAL</div><div class="math-equation">P(x) = Σ yᵢ · Lᵢ(x)</div><div class="math-note">Sum over i = 0, 1, …, n</div></div>
+            <p>Each basis polynomial <em>Lᵢ(x)</em> equals 1 at its own X coordinate and 0 at the other supplied X coordinates:</p>
+            <div class="math-card"><div class="math-label">LAGRANGE BASIS</div><div class="math-equation">Lᵢ(x) = ∏ (x − xⱼ) / (xᵢ − xⱼ)</div><div class="math-note">Multiply over all j from 0 to n except j = i</div></div>
+            <p>Multiplying each basis polynomial by its Y value and adding the terms creates the final interpolation polynomial.</p>
+        </section>
+
+        <section id="example" class="guide-section">
+            <div class="section-label">03 / WORKED EXAMPLE</div>
+            <h2>Example: interpolate three points</h2>
+            <p>Suppose you want a polynomial through these coordinates:</p>
+            <div class="table-wrap">
+                <table class="guide-data-table">
+                    <thead><tr><th scope="col">Point</th><th scope="col">X</th><th scope="col">Y</th></tr></thead>
+                    <tbody><tr><th scope="row">1</th><td>1</td><td>2</td></tr><tr><th scope="row">2</th><td>2</td><td>5</td></tr><tr><th scope="row">3</th><td>3</td><td>10</td></tr></tbody>
+                </table>
+            </div>
+            <h3>Step 1. Build the basis polynomials</h3>
+            <p>For each point, use the other two X coordinates:</p>
+            <div class="equation-list" aria-label="Three Lagrange basis polynomials">
+                <div>L₀(x) = (x − 2)(x − 3) / 2</div>
+                <div>L₁(x) = −(x − 1)(x − 3)</div>
+                <div>L₂(x) = (x − 1)(x − 2) / 2</div>
+            </div>
+            <h3>Step 2. Weight by Y and add</h3>
+            <p>Use the three Y values, 2, 5, and 10:</p>
+            <div class="math-card"><div class="math-label">SUM</div><div class="math-equation">P(x) = 2L₀(x) + 5L₁(x) + 10L₂(x)</div></div>
+            <h3>Step 3. Simplify and check</h3>
+            <p>Expanding and collecting like terms gives:</p>
+            <div class="answer-card"><span>RESULT</span><strong>P(x) = x² + 1</strong></div>
+            <p>Check the inputs: P(1) = 2, P(2) = 5, and P(3) = 10. The polynomial passes through all three points.</p>
+        </section>
+
+        <section id="calculator" class="guide-section">
+            <div class="section-label">04 / TRY IT</div>
+            <h2>How to use the calculator</h2>
+            <ol class="guide-steps">
+                <li>Open the <a href="/">Lagrange interpolation calculator</a>.</li>
+                <li>Enter X and Y values in the two columns. Start with at least two points, and use <strong>Add point</strong> for more.</li>
+                <li>Ensure every X value is different. Y values may be the same.</li>
+                <li>Select <strong>Calculate polynomial</strong> to display the formula and plot the curve.</li>
+            </ol>
+            <p>You can test the worked example above by entering (1, 2), (2, 5), and (3, 10). The displayed coefficients may include trailing zeros because the calculator rounds them for readability.</p>
+            <a href="/" class="guide-cta">Open the calculator <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section id="questions" class="guide-section">
+            <div class="section-label">05 / FAQ</div>
+            <h2>Frequently asked questions</h2>
+            <div class="faq-item"><h3>How many points do I need?</h3><p>Two distinct X coordinates define a line. Three points define a polynomial of degree at most two, four points of degree at most three, and so on.</p></div>
+            <div class="faq-item"><h3>Can two points have the same X value?</h3><p>Not for standard Lagrange interpolation. Two identical X coordinates make the basis formula divide by zero, even if the Y values are equal.</p></div>
+            <div class="faq-item"><h3>Is interpolation the same as regression?</h3><p>No. Interpolation passes through all supplied points; regression usually seeks an approximate fit and can be better for noisy measurements.</p></div>
+            <div class="faq-item"><h3>Can I use negative or decimal values?</h3><p>Yes. The X and Y coordinates can be negative or decimal numbers. For very many points or extreme values, floating-point rounding may affect numerical accuracy.</p></div>
+        </section>
+    </article>
+    <footer class="app-footer"><a href="/">Lagrange calculator</a> · Polynomial interpolation guide</footer>
+</main>
+<script src="../js/theme.js"></script>
+<script src="../js/analytics.js"></script>
+</body>
+</html>
