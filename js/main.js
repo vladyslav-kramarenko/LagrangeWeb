@@ -9,7 +9,8 @@ function initTableButtons() {
     document.getElementById('add-row-btn').addEventListener('click', function () {
         const tbody = document.querySelector('table tbody');
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td><input type="text" name="x[]" class="form-control"></td><td><input type="text" name="y[]" class="form-control"></td>`;
+        const pointNumber = tbody.children.length + 1;
+        tr.innerHTML = `<td><input type="text" inputmode="decimal" name="x[]" class="form-control" aria-label="X value for point ${pointNumber}"></td><td><input type="text" inputmode="decimal" name="y[]" class="form-control" aria-label="Y value for point ${pointNumber}"></td>`;
         tbody.appendChild(tr);
     });
 
@@ -64,6 +65,7 @@ function simplifyPolynomial() {
     let minX = Math.min(...xValues);
     let maxX = Math.max(...xValues);
     drawChart(coefficients, minX, maxX, xValues, yValues);
+    document.body.classList.add('has-results');
 }
 
 
