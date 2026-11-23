@@ -1,65 +1,89 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Simplify Polynomial</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/style.css"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="Calculate a Lagrange interpolation polynomial from a set of points and visualize its graph.">
+    <title>Lagrange Polynomial Interpolation</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container justify-content-center">
-    <div class="col-md-12">
-        <h1>Interpolation of function using Lagrange method</h1>
-        <p>Enter initial dots:</p>
-    </div>
-    <form id="inputForm" class="col-md-12" novalidate>
-        <table id="inputTable" class="table">
-            <thead>
-            <tr>
-                <th>X</th>
-                <th>Y</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><input type="text" name="x[]" class="form-control" required></td>
-                <td><input type="text" name="y[]" class="form-control" required></td>
-            </tr>
-            <tr>
-                <td><input type="text" name="x[]" class="form-control" required></td>
-                <td><input type="text" name="y[]" class="form-control" required></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="buttons">
-            <button type="button" class="btn tableBtn btn-success " id="add-row-btn">+</button>
-            <button type="button" class="btn tableBtn btn-danger" id="remove-row-btn">-</button>
-        </div>
-        <div class="buttons">
-            <button type="button" class="btn btn-primary"
-                    onclick="simplifyPolynomial()">Calculate
-            </button>
-        </div>
-    </form>
-    <hr>
-    <div class="col-md-12">
-        <h4>Result:</h4>
-        <p id="output"></p>
-    </div>
-    <div class="col-md-12 justify-content-center">
-        <div class="col-md-12 chart">
-            <canvas id="chart"></canvas>
-        </div>
-    </div>
-</div>
+<main class="app-shell">
+    <header class="app-header">
+        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Interactive math tool</div>
+        <h1>Lagrange interpolation</h1>
+        <p>Find the polynomial that passes through your data points and visualize the result.</p>
+    </header>
 
+    <div class="workspace">
+        <section class="panel points-panel" aria-labelledby="points-heading">
+            <div class="panel-heading">
+                <div>
+                    <div class="section-label">01 / Input</div>
+                    <h2 id="points-heading">Data points</h2>
+                </div>
+                <span class="panel-caption">At least 2 points</span>
+            </div>
+            <p class="panel-description">Enter the X and Y coordinates for each point.</p>
+
+            <form id="inputForm" novalidate>
+                <table id="inputTable" class="points-table">
+                    <thead>
+                    <tr><th scope="col">X value</th><th scope="col">Y value</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input type="text" inputmode="decimal" name="x[]" class="form-control" aria-label="X value for point 1" placeholder="e.g. 1" required></td>
+                        <td><input type="text" inputmode="decimal" name="y[]" class="form-control" aria-label="Y value for point 1" placeholder="e.g. 2" required></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" inputmode="decimal" name="x[]" class="form-control" aria-label="X value for point 2" placeholder="e.g. 3" required></td>
+                        <td><input type="text" inputmode="decimal" name="y[]" class="form-control" aria-label="Y value for point 2" placeholder="e.g. 4" required></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="point-actions">
+                    <button type="button" id="add-row-btn" class="action-btn action-add"><span class="action-symbol" aria-hidden="true">+</span> Add point</button>
+                    <button type="button" id="remove-row-btn" class="action-btn action-remove"><span class="action-symbol" aria-hidden="true">−</span> Remove</button>
+                </div>
+                <button type="button" class="calculate-btn" onclick="simplifyPolynomial()">Calculate polynomial <span aria-hidden="true">→</span></button>
+            </form>
+        </section>
+
+        <section class="panel result-panel" aria-labelledby="result-heading">
+            <div class="panel-heading">
+                <div>
+                    <div class="section-label">02 / Output</div>
+                    <h2 id="result-heading">Your result</h2>
+                </div>
+            </div>
+            <p class="panel-description">The interpolating polynomial and its curve.</p>
+
+            <div class="formula-card">
+                <div class="formula-title">POLYNOMIAL</div>
+                <div class="formula-line"><span class="function-name">f(x) =</span> <span id="output" aria-live="polite">—</span></div>
+            </div>
+
+            <div class="plot-heading"><h3>Graph</h3><span>Polynomial &amp; data points</span></div>
+            <div class="chart-area">
+                <canvas id="chart" role="img" aria-label="Chart of the interpolating polynomial and input points"></canvas>
+                <div id="chart-placeholder" class="chart-placeholder">
+                    <div class="placeholder-icon" aria-hidden="true">
+                        <svg viewBox="0 0 64 64" fill="none"><path d="M9 48h46M13 52V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 42C25 40 27 18 37 22S46 39 53 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="25" cy="33" r="4" fill="#f97316"/><circle cx="44" cy="27" r="4" fill="#f97316"/></svg>
+                    </div>
+                    <p>Your graph will appear here</p>
+                    <span>Enter your points, then calculate.</span>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="app-footer">Lagrange polynomial interpolation</footer>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/lagrange.js"></script>
 <script src="js/main.js"></script>
-<script>
-
-</script>
 </body>
 </html>
