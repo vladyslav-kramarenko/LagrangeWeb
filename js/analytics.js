@@ -7,7 +7,11 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', measurementId);
+    // Never transmit URL query parameters: share links can contain input coordinates.
+    window.gtag('config', measurementId, {
+        page_location: window.location.origin + window.location.pathname,
+        page_path: window.location.pathname
+    });
 
     const script = document.createElement('script');
     script.async = true;
