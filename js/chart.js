@@ -1,4 +1,42 @@
+function getChartTheme() {
+    const style = getComputedStyle(document.documentElement);
+    return {
+        text: style.getPropertyValue('--chart-text').trim() || '#6a778b',
+        grid: style.getPropertyValue('--chart-grid').trim() || 'rgba(105, 119, 140, .22)',
+        curve: style.getPropertyValue('--chart-curve').trim() || '#4f46e5',
+        points: style.getPropertyValue('--chart-points').trim() || '#f97316'
+    };
+}
+
+function updateChartTheme() {
+    const colors = getChartTheme();
+    Chart.defaults.color = colors.text;
+    Chart.defaults.borderColor = colors.grid;
+    if (typeof chart === 'undefined' || !chart) return;
+    if (chart.data.datasets && chart.data.datasets.length >= 2) {
+        chart.data.datasets[0].borderColor = colors.curve;
+        chart.data.datasets[1].borderColor = colors.points;
+    }
+    chart.options.plugins = chart.options.plugins || {};
+    chart.options.plugins.legend = chart.options.plugins.legend || {};
+    chart.options.plugins.legend.labels = chart.options.plugins.legend.labels || {};
+    chart.options.plugins.legend.labels.color = colors.text;
+    for (const axis of ['x', 'y']) {
+        if (!chart.options.scales || !chart.options.scales[axis]) continue;
+        chart.options.scales[axis].ticks = chart.options.scales[axis].ticks || {};
+        chart.options.scales[axis].ticks.color = colors.text;
+        chart.options.scales[axis].grid = chart.options.scales[axis].grid || {};
+        chart.options.scales[axis].grid.color = colors.grid;
+        chart.options.scales[axis].border = chart.options.scales[axis].border || {};
+        chart.options.scales[axis].border.color = colors.grid;
+    }
+    chart.update('none');
+}
+
+window.updateChartTheme = updateChartTheme;
+
 function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
+    const theme = getChartTheme();
 
     const xValues = [];
     const yValues = [];
@@ -10,7 +48,7 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     const lagrangeFunction = {
         label: 'Polynomial Function',
         data: [],
-        borderColor: '#4f46e5',
+        borderColor: theme.curve,
         borderWidth: 2,
         pointRadius: 0.5
     }
@@ -25,7 +63,7 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     const userPoints = {
         label: 'Points',
         data: userPointsMap,
-        borderColor: '#f97316',
+        borderColor: theme.points,
         borderWidth: 1,
         pointRadius: 5,
         fill: false
@@ -55,6 +93,7 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: theme.text } } },
         scales: {
             x: {
                 type: 'linear',
@@ -63,7 +102,15 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
                     stepSize: stepSize,
                     min: minX,
                     max: maxX,
-                }
+                    color: theme.text,
+                },
+                grid: { color: theme.grid },
+                border: { color: theme.grid }
+            },
+            y: {
+                ticks: { color: theme.text },
+                grid: { color: theme.grid },
+                border: { color: theme.grid }
             }
         }
     };
