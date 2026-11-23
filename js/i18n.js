@@ -42,6 +42,8 @@
         const isResult = document.querySelector('.result-shell') !== null;
         document.title = translate(isResult ? 'resultPageTitle' : (isGuide ? 'guidePageTitle' : 'homePageTitle'));
         selector.value = lang;
+        const compactLanguage = document.getElementById('language-current');
+        if (compactLanguage) compactLanguage.textContent = lang.toUpperCase();
         if (typeof chart !== 'undefined' && chart && chart.data.datasets.length >= 2) {
             chart.data.datasets[0].label = translate('chartPolynomial');
             chart.data.datasets[1].label = translate('chartPoints');
