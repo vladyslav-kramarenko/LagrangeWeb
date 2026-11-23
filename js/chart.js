@@ -46,7 +46,7 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     }
 
     const lagrangeFunction = {
-        label: 'Polynomial Function',
+        label: window.lagrangeI18n ? window.lagrangeI18n.t('chartPolynomial') : 'Polynomial Function',
         data: [],
         borderColor: theme.curve,
         borderWidth: 2,
@@ -61,15 +61,21 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
     }, {});
 
     const userPoints = {
-        label: 'Points',
-        data: userPointsMap,
+        label: window.lagrangeI18n ? window.lagrangeI18n.t('chartPoints') : 'Points',
+        data: pointsXValues.map((x, i) => ({ x, y: pointsYValues[i] })),
         borderColor: theme.points,
         borderWidth: 1,
         pointRadius: 5,
         fill: false
     }
 
-    for (let x = -minX; x <= maxX; x += stepSize / 100) {
+    const span = maxX - minX;
+    const margin = Math.max(span * 0.08, 0.2);
+    const from = minX - margin;
+    const to = maxX + margin;
+    const samples = 250;
+    for (let index = 0; index <= samples; index++) {
+        const x = from + (to - from) * index / samples;
         let y = 0;
         for (let i = 0; i < coefficients.length; i++) {
             y += coefficients[i] * Math.pow(x, i);
@@ -98,10 +104,10 @@ function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
             x: {
                 type: 'linear',
                 position: 'bottom',
+                min: from,
+                max: to,
                 ticks: {
                     stepSize: stepSize,
-                    min: minX,
-                    max: maxX,
                     color: theme.text,
                 },
                 grid: { color: theme.grid },
