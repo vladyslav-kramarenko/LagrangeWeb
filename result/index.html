@@ -27,26 +27,28 @@
   <header class="app-header guide-header">
     <div class="app-toolbar">
       <a href="/" class="breadcrumb-link" data-i18n="resultBack">← Back to calculator</a>
-      <label class="language-control" for="language-select">
-        <span aria-hidden="true">🌐</span>
-        <span class="visually-hidden">Language</span>
-        <select id="language-select" aria-label="Language">
+      <label class="language-control compact-select" for="language-select">
+                <span class="select-icon" aria-hidden="true">🌐</span>
+                <span class="select-value" id="language-current" aria-hidden="true">EN</span>
+                <select id="language-select" aria-label="Language">
           <option value="en">English</option>
           <option value="ru">Русский</option>
           <option value="fr">Français</option>
           <option value="uk">Українська</option>
           <option value="de">Deutsch</option>
         </select>
-      </label>
-      <label class="theme-control" for="theme-select">
-        <span class="theme-icon" aria-hidden="true">◐</span>
-        <span class="visually-hidden">Appearance</span>
-        <select id="theme-select" aria-label="Appearance">
+                <span class="select-arrow" aria-hidden="true">⌄</span>
+            </label>
+      <label class="theme-control compact-select" for="theme-select">
+                <span class="select-icon theme-icon" id="theme-current-icon" aria-hidden="true">◐</span>
+                <span class="select-value" id="theme-current" aria-hidden="true">Auto</span>
+                <select id="theme-select" aria-label="Appearance">
           <option value="system" data-i18n="themeSystem">System theme</option>
           <option value="light" data-i18n="themeLight">Light theme</option>
           <option value="dark" data-i18n="themeDark">Dark theme</option>
         </select>
-      </label>
+                <span class="select-arrow" aria-hidden="true">⌄</span>
+            </label>
     </div>
     <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> <span data-i18n="toolTagline">Interactive math tool</span></div>
     <h1 data-i18n="resultHeading">Graph &amp; polynomial</h1>
