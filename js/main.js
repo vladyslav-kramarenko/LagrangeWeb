@@ -14,6 +14,8 @@ function markResultsStale() {
     if (output) output.textContent = '—';
     const printButton = document.getElementById('print-report-btn');
     if (printButton) printButton.hidden = true;
+    const resultLink = document.getElementById('open-result-btn');
+    if (resultLink) resultLink.hidden = true;
 }
 
 function createSignControls(row) {
@@ -115,6 +117,18 @@ function simplifyPolynomial() {
     document.body.classList.add('has-results');
     const printButton = document.getElementById('print-report-btn');
     if (printButton) printButton.hidden = false;
+    const resultLink = document.getElementById('open-result-btn');
+    if (resultLink) {
+        const shareable = points.length <= 24 && points.every(point => Math.abs(point.x) <= 1e9 && Math.abs(point.y) <= 1e9);
+        if (shareable) {
+            const url = new URL('/result/', window.location.origin);
+            url.searchParams.set('p', JSON.stringify(points.map(point => [point.x, point.y])));
+            resultLink.href = url.pathname + url.search;
+            resultLink.hidden = false;
+        } else {
+            resultLink.hidden = true;
+        }
+    }
     if (typeof window.gtag === 'function') {
         window.gtag('event', 'lagrange_calculated', { point_count: points.length });
     }
