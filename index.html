@@ -26,7 +26,7 @@
 <main class="app-shell">
     <header class="app-header">
         <div class="app-toolbar">
-            <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Interactive math tool</div>
+            <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> <span data-i18n="toolTagline">Interactive math tool</span></div>
             <label class="language-control" for="language-select">
                 <span aria-hidden="true">🌐</span>
                 <span class="visually-hidden">Language</span>
@@ -40,32 +40,32 @@
                 <span class="theme-icon" aria-hidden="true">◐</span>
                 <span class="visually-hidden">Appearance</span>
                 <select id="theme-select" aria-label="Appearance">
-                    <option value="system">System theme</option>
-                    <option value="light">Light theme</option>
-                    <option value="dark">Dark theme</option>
+                    <option value="system" data-i18n="themeSystem">System theme</option>
+                    <option value="light" data-i18n="themeLight">Light theme</option>
+                    <option value="dark" data-i18n="themeDark">Dark theme</option>
                 </select>
             </label>
         </div>
-        <h1>Lagrange interpolation calculator</h1>
-        <p>Find the polynomial that passes through your data points and visualize the result.</p>
-        <a class="guide-link" href="/guide/">Learn the formula and see a worked example <span aria-hidden="true">→</span></a>
+        <h1 data-i18n="homeTitle">Lagrange interpolation calculator</h1>
+        <p data-i18n="homeIntro">Find the polynomial that passes through your data points and visualize the result.</p>
+        <a class="guide-link" href="/guide/"><span data-i18n="guideLinkTop">Learn the formula and see a worked example</span> <span aria-hidden="true">→</span></a>
     </header>
 
     <div class="workspace">
         <section class="panel points-panel" aria-labelledby="points-heading">
             <div class="panel-heading">
                 <div>
-                    <div class="section-label">01 / Input</div>
-                    <h2 id="points-heading">Data points</h2>
+                    <div class="section-label" data-i18n="inputStep">01 / Input</div>
+                    <h2 id="points-heading" data-i18n="dataPoints">Data points</h2>
                 </div>
-                <span class="panel-caption">At least 2 points</span>
+                <span class="panel-caption" data-i18n="atLeastTwo">At least 2 points</span>
             </div>
-            <p class="panel-description">Enter the X and Y coordinates for each point.</p>
+            <p class="panel-description" data-i18n="enterCoordinates">Enter the X and Y coordinates for each point.</p>
 
             <form id="inputForm" novalidate>
                 <table id="inputTable" class="points-table">
                     <thead>
-                    <tr><th scope="col">X value</th><th scope="col">Y value</th></tr>
+                    <tr><th scope="col" data-i18n="xValue">X value</th><th scope="col" data-i18n="yValue">Y value</th></tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -80,48 +80,48 @@
                 </table>
                 <p id="input-error" class="input-error" role="alert" aria-live="assertive"></p>
                 <div class="point-actions">
-                    <button type="button" id="add-row-btn" class="action-btn action-add"><span class="action-symbol" aria-hidden="true">+</span> Add point</button>
-                    <button type="button" id="remove-row-btn" class="action-btn action-remove"><span class="action-symbol" aria-hidden="true">−</span> Remove</button>
+                    <button type="button" id="add-row-btn" class="action-btn action-add"><span class="action-symbol" aria-hidden="true">+</span> <span data-i18n="addPoint">Add point</span></button>
+                    <button type="button" id="remove-row-btn" class="action-btn action-remove"><span class="action-symbol" aria-hidden="true">−</span> <span data-i18n="removePoint">Remove</span></button>
                 </div>
-                <button type="button" class="calculate-btn" onclick="simplifyPolynomial()">Calculate polynomial <span aria-hidden="true">→</span></button>
+                <button type="button" class="calculate-btn" onclick="simplifyPolynomial()"><span data-i18n="calculate">Calculate polynomial</span> <span aria-hidden="true">→</span></button>
             </form>
         </section>
 
         <section class="panel result-panel" aria-labelledby="result-heading">
             <div class="panel-heading">
                 <div>
-                    <div class="section-label">02 / Output</div>
-                    <h2 id="result-heading">Your result</h2>
+                    <div class="section-label" data-i18n="outputStep">02 / Output</div>
+                    <h2 id="result-heading" data-i18n="yourResult">Your result</h2>
                 </div>
             </div>
-            <p class="panel-description">The interpolating polynomial and its curve.</p>
+            <p class="panel-description" data-i18n="resultIntro">The interpolating polynomial and its curve.</p>
 
             <div class="formula-card">
-                <div class="formula-title">POLYNOMIAL</div>
+                <div class="formula-title" data-i18n="polynomial">POLYNOMIAL</div>
                 <div class="formula-line"><span class="function-name">f(x) =</span> <span id="output" aria-live="polite">—</span></div>
             </div>
 
-            <div class="plot-heading"><h3>Graph</h3><span>Polynomial &amp; data points</span></div>
+            <div class="plot-heading"><h3 data-i18n="graph">Graph</h3><span data-i18n="graphCaption">Polynomial &amp; data points</span></div>
             <div class="chart-area">
                 <canvas id="chart" role="img" aria-label="Chart of the interpolating polynomial and input points"></canvas>
                 <div id="chart-placeholder" class="chart-placeholder">
                     <div class="placeholder-icon" aria-hidden="true">
                         <svg viewBox="0 0 64 64" fill="none"><path d="M9 48h46M13 52V10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M17 42C25 40 27 18 37 22S46 39 53 16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="25" cy="33" r="4" fill="#f97316"/><circle cx="44" cy="27" r="4" fill="#f97316"/></svg>
                     </div>
-                    <p>Your graph will appear here</p>
-                    <span>Enter your points, then calculate.</span>
+                    <p data-i18n="emptyGraph">Your graph will appear here</p>
+                    <span data-i18n="emptyGraphHint">Enter your points, then calculate.</span>
                 </div>
             </div>
             <button type="button" id="print-report-btn" class="print-report-btn" hidden><span aria-hidden="true">⎙</span> <span data-i18n="printReport">Print / Save as PDF</span></button>
         </section>
     </div>
     <section class="learn-summary" aria-labelledby="about-lagrange">
-        <div class="section-label">UNDERSTAND THE METHOD</div>
-        <h2 id="about-lagrange">What is Lagrange interpolation?</h2>
-        <p>Lagrange interpolation constructs a polynomial that passes through a set of points with distinct X coordinates. Enter your known values above to calculate the polynomial and plot its curve. For example, the points (1, 2), (2, 5), and (3, 10) lie on <strong>f(x) = x² + 1</strong>.</p>
-        <a href="/guide/">Read the step-by-step Lagrange interpolation guide <span aria-hidden="true">→</span></a>
+        <div class="section-label" data-i18n="understand">UNDERSTAND THE METHOD</div>
+        <h2 id="about-lagrange" data-i18n="whatIs">What is Lagrange interpolation?</h2>
+        <p data-i18n-html="shortExplanation">Lagrange interpolation constructs a polynomial that passes through a set of points with distinct X coordinates. Enter your known values above to calculate the polynomial and plot its curve. For example, the points (1, 2), (2, 5), and (3, 10) lie on <strong>f(x) = x² + 1</strong>.</p>
+        <a href="/guide/"><span data-i18n="guideLinkBottom">Read the step-by-step Lagrange interpolation guide</span> <span aria-hidden="true">→</span></a>
     </section>
-    <footer class="app-footer">Lagrange polynomial interpolation</footer>
+    <footer class="app-footer" data-i18n="footer">Lagrange polynomial interpolation</footer>
 </main>
 <section id="print-report" class="print-report" aria-label="Printable interpolation report">
     <header>
