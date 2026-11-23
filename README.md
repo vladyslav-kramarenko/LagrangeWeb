@@ -51,3 +51,14 @@ Development URL: https://lagrangeweb-dev.kramarenko-vladyslav-92.workers.dev/
 This is a static HTML/CSS/JavaScript application; there is no build step.
 The Worker configuration for development is in `wrangler.jsonc` on this branch.
 The `master` branch and the existing production domain are not changed by this dev setup.
+
+## Pages and SEO
+
+- `/`: interpolation calculator, chart, and concise explanation.
+- `/guide/`: worked example, formula, usage steps, and FAQ.
+- Each page declares its own canonical URL on `lagrange.kramarenko.info`.
+- `sitemap.xml` lists both production URLs; `robots.txt` links to it.
+- `_headers` sends `X-Robots-Tag: noindex` for preview hosts, not the canonical production host.
+- `js/analytics.js` sends GA4 page views only from `lagrange.kramarenko.info`; calculator events contain only the number of points, never their values.
+
+Do not switch the public domain until the deployed production HTML and response headers have been verified. The dev branch uses its own Worker and must not replace the production domain directly.
