@@ -47,6 +47,26 @@
     background: var(--surface);
     color: var(--ink);
 }
+/* Explicit light palette to make manual selection deterministic even when the
+   user's browser or OS prefers a dark color scheme. */
+html[data-theme="light"] {
+    color-scheme: light;
+    --ink: #17243b;
+    --muted: #64748b;
+    --line: #e4eaf2;
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --surface: #ffffff;
+    --canvas: #f5f7fb;
+    --chart-text: #6a778b;
+    --chart-grid: rgba(105, 119, 140, .22);
+    --chart-curve: #4f46e5;
+    --chart-points: #f97316;
+}
+html[data-theme="light"] body {
+    background: radial-gradient(ellipse at 4% 0%, #ebefff 0, transparent 36%), var(--canvas);
+}
+
 html[data-theme="dark"] {
     color-scheme: dark;
     --ink: #eaf0fb;
