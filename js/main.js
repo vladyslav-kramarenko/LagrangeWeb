@@ -66,6 +66,9 @@ function simplifyPolynomial() {
     let maxX = Math.max(...xValues);
     drawChart(coefficients, minX, maxX, xValues, yValues);
     document.body.classList.add('has-results');
+    if (typeof window.gtag === 'function' && coefficients.every(Number.isFinite)) {
+        window.gtag('event', 'lagrange_calculated', { point_count: xValues.length });
+    }
 }
 
 
