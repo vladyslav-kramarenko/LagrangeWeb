@@ -25,7 +25,7 @@
 <main class="app-shell guide-shell">
     <header class="app-header guide-header">
         <div class="app-toolbar">
-            <a class="breadcrumb-link" href="/" data-i18n="backToCalc">← Back to calculator</a>
+            <a class="breadcrumb-link" href="/" data-i18n-aria="backToCalc" aria-label="Back to calculator"><span class="toolbar-long" data-i18n="backToCalc">← Back to calculator</span><span class="toolbar-short" data-i18n="backShort">← Back</span></a>
             <label class="language-control compact-select" for="language-select">
                 <span class="select-icon" aria-hidden="true">🌐</span>
                 <span class="select-value" id="language-current" aria-hidden="true">EN</span>
@@ -40,13 +40,13 @@
             </label>
             <label class="theme-control compact-select" for="theme-select">
                 <span class="select-icon theme-icon" id="theme-current-icon" aria-hidden="true">◐</span>
-                <span class="select-value" id="theme-current" aria-hidden="true">Auto</span>
+                
                 <select id="theme-select" aria-label="Appearance">
                     <option value="system" data-i18n="themeSystem">System theme</option>
                     <option value="light" data-i18n="themeLight">Light theme</option>
                     <option value="dark" data-i18n="themeDark">Dark theme</option>
                 </select>
-                <span class="select-arrow" aria-hidden="true">⌄</span>
+                
             </label>
         </div>
         <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> <span data-i18n="learningGuide">Learning guide</span></div>
