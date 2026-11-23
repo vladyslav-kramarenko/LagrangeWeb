@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="robots" content="noindex,follow">
+  <meta name="description" content="View and share a Lagrange interpolation graph and polynomial formula.">
+  <title>Lagrange graph and polynomial | Result</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/theme.css">
+  <link rel="stylesheet" href="../css/guide.css">
+  <link rel="stylesheet" href="../css/app-extras.css">
+  <link rel="stylesheet" href="../css/result.css">
+  <script>
+    (() => {
+      let preference = 'system';
+      try { preference = localStorage.getItem('lagrange-theme') || 'system'; } catch (_) {}
+      const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = preference === 'dark' || (preference !== 'light' && dark) ? 'dark' : 'light';
+    })();
+  </script>
+</head>
+<body>
+<main class="app-shell result-shell">
+  <header class="app-header guide-header">
+    <div class="app-toolbar">
+      <a href="/" class="breadcrumb-link" data-i18n="resultBack">← Back to calculator</a>
+      <label class="language-control" for="language-select">
+        <span aria-hidden="true">🌐</span>
+        <span class="visually-hidden">Language</span>
+        <select id="language-select" aria-label="Language">
+          <option value="en">English</option>
+          <option value="ru">Русский</option>
+          <option value="fr">Français</option>
+          <option value="uk">Українська</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </label>
+      <label class="theme-control" for="theme-select">
+        <span class="theme-icon" aria-hidden="true">◐</span>
+        <span class="visually-hidden">Appearance</span>
+        <select id="theme-select" aria-label="Appearance">
+          <option value="system" data-i18n="themeSystem">System theme</option>
+          <option value="light" data-i18n="themeLight">Light theme</option>
+          <option value="dark" data-i18n="themeDark">Dark theme</option>
+        </select>
+      </label>
+    </div>
+    <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> <span data-i18n="toolTagline">Interactive math tool</span></div>
+    <h1 data-i18n="resultHeading">Graph &amp; polynomial</h1>
+    <p data-i18n="resultSubheading">Share the result or download the graph with its formula as an image.</p>
+  </header>
+
+  <section class="panel result-share-panel">
+    <p id="result-error" class="input-error" role="alert" hidden></p>
+    <div id="result-content" hidden>
+      <div class="formula-card">
+        <div class="formula-title" data-i18n="polynomial">POLYNOMIAL</div>
+        <div class="formula-line"><span class="function-name">f(x) =</span> <span id="result-formula"></span></div>
+      </div>
+      <div class="result-chart-heading">
+        <h2 data-i18n="resultChart">Interpolation graph</h2>
+        <p id="point-summary"></p>
+      </div>
+      <div class="result-canvas-box">
+        <canvas id="chart" role="img" aria-label="Polynomial interpolation graph"></canvas>
+      </div>
+      <div class="result-controls">
+        <button type="button" class="calculate-btn" id="download-png" data-i18n="downloadPng">Download PNG</button>
+        <button type="button" class="print-report-btn" id="copy-link" data-i18n="copyLink">Copy result link</button>
+        <button type="button" class="print-report-btn" id="share-link" data-i18n="shareResult">Share result</button>
+      </div>
+      <p class="result-privacy" data-i18n="resultHint">Anyone with this link can see the numeric points you entered.</p>
+      <p id="share-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+  <footer class="app-footer">lagrange.kramarenko.info</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="../js/chart.js"></script>
+<script src="../js/lagrange.js"></script>
+<script src="../js/theme.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/result.js"></script>
+<script src="../js/analytics.js"></script>
+</body>
+</html>
