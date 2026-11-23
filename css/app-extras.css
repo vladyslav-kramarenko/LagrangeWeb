@@ -60,12 +60,26 @@ html[data-theme="dark"] .share-view-btn:hover { background: #373265; }
     text-decoration: none;
     overflow: hidden;
 }
-.app-toolbar .brand-home-link img {
-    display: block;
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    border-radius: 9px;
+.app-toolbar .brand-home-link .brand-vk {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border: 1px solid rgba(103, 223, 228, .48);
+    border-radius: 10px;
+    background: #102829;
+    color: #77e0e4;
+    font: 800 19px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: -.08em;
+    text-indent: -.08em;
+    box-shadow: 0 0 0 1px rgba(103, 223, 228, .1), 0 0 12px rgba(77, 225, 229, .08);
+}
+.app-toolbar .brand-home-link:hover .brand-vk {
+    border-color: #77e0e4;
+    box-shadow: 0 0 0 2px rgba(119, 224, 228, .15);
 }
 .app-shell .app-header .app-toolbar > .brand-home-link,
 .app-shell .app-header .app-toolbar > .toolbar-leading { grid-column: 1; grid-row: 1; }
