@@ -27,6 +27,12 @@
         document.querySelectorAll('[data-i18n-aria]').forEach(element => {
             element.setAttribute('aria-label', translate(element.dataset.i18nAria));
         });
+        const pointInputs = document.querySelectorAll('#inputTable tbody tr');
+        pointInputs.forEach((row, index) => {
+            row.querySelectorAll('input[name="x[]"], input[name="y[]"]').forEach((input, coordinate) => {
+                input.setAttribute('aria-label', (coordinate === 0 ? translate('xValue') : translate('yValue')) + ' ' + (index + 1));
+            });
+        });
         const isGuide = document.querySelector('.guide-shell') !== null;
         document.title = translate(isGuide ? 'guidePageTitle' : 'homePageTitle');
         selector.value = lang;
