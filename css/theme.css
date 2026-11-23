@@ -1,0 +1,126 @@
+/* System preference is resolved before paint in index.html. The selected
+   effective mode lives on <html data-theme="light|dark">. */
+:root {
+    --chart-text: #6a778b;
+    --chart-grid: rgba(105, 119, 140, .22);
+}
+.app-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.app-toolbar .eyebrow { margin-bottom: 0; }
+.app-toolbar + h1 { margin-top: 17px; }
+.theme-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    padding: 0 9px 0 12px;
+    min-height: 38px;
+    border: 1px solid #dce3ed;
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--muted);
+}
+.theme-icon { font-size: 17px; color: var(--accent); }
+.theme-control select {
+    max-width: 145px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    padding: 7px 1px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    cursor: pointer;
+    outline: 0;
+}
+.theme-control:focus-within {
+    outline: 3px solid rgba(79,70,229,.23);
+    outline-offset: 2px;
+}
+.theme-control select option {
+    background: var(--surface);
+    color: var(--ink);
+}
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --ink: #eaf0fb;
+    --muted: #aebbd0;
+    --line: #29364c;
+    --accent: #ada4ff;
+    --accent-hover: #6e60ed;
+    --surface: #131e2e;
+    --canvas: #0b1320;
+    --chart-text: #b4c0d3;
+    --chart-grid: rgba(172, 190, 219, .16);
+}
+html[data-theme="dark"] body {
+    background: radial-gradient(ellipse at 4% 0%, #1c2143 0, transparent 38%), var(--canvas);
+}
+html[data-theme="dark"] .eyebrow-dot {
+    box-shadow: 0 0 0 4px rgba(173,164,255,.14);
+}
+html[data-theme="dark"] .panel {
+    border-color: #29364a;
+    box-shadow: 0 16px 45px rgba(0,0,0,.14), 0 2px 6px rgba(0,0,0,.1);
+}
+html[data-theme="dark"] .panel-caption,
+html[data-theme="dark"] .points-table th {
+    color: #a0aec3;
+}
+html[data-theme="dark"] .points-table .form-control {
+    background: #182538;
+    border-color: #35445b;
+    color: #eef3ff;
+}
+html[data-theme="dark"] .points-table .form-control::placeholder {
+    color: #8a9ab0;
+}
+html[data-theme="dark"] .points-table .form-control:focus {
+    background: #202d43;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(173,164,255,.16);
+}
+html[data-theme="dark"] .points-table tr.duplicate .form-control {
+    background: #3c252f;
+    border-color: #fb7185;
+}
+html[data-theme="dark"] .action-btn {
+    background: #1b293d;
+    border-color: #35445b;
+    color: #d7e0ef;
+}
+html[data-theme="dark"] .action-btn:hover {
+    background: #273750;
+    border-color: #887ff2;
+}
+html[data-theme="dark"] .calculate-btn {
+    background: #6154db;
+    color: #ffffff;
+}
+html[data-theme="dark"] .calculate-btn:hover { background: #7669f1; }
+html[data-theme="dark"] .formula-card {
+    background: #1b2341;
+    border-color: #39416b;
+}
+html[data-theme="dark"] .formula-title { color: #b9bbeb; }
+html[data-theme="dark"] .plot-heading span { color: #a0aec3; }
+html[data-theme="dark"] .chart-area {
+    background: #151f30;
+    border-color: #2c3a50;
+}
+html[data-theme="dark"] .chart-placeholder { background: #151f30; }
+html[data-theme="dark"] .chart-placeholder p { color: #dce5f3; }
+html[data-theme="dark"] .chart-placeholder span { color: #a9b5ca; }
+html[data-theme="dark"] .placeholder-icon { color: #a9a1ff; }
+html[data-theme="dark"] .app-footer { color: #93a3bc; }
+html[data-theme="dark"] .theme-control { border-color: #35445b; }
+@media (max-width: 420px) {
+    .app-toolbar { gap: 6px; }
+    .app-toolbar .eyebrow { font-size: 10px; letter-spacing: .055em; }
+    .theme-control { min-height: 36px; padding: 0 6px 0 8px; gap: 4px; }
+    .theme-control select { font-size: 11px; max-width: 116px; }
+}
