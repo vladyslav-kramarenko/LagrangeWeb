@@ -8,11 +8,31 @@
     <title>Lagrange Polynomial Interpolation</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script>
+        (() => {
+            let preference = 'system';
+            try { preference = localStorage.getItem('lagrange-theme') || 'system'; } catch (_) {}
+            const systemIsDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.dataset.theme = preference === 'dark' || (preference !== 'light' && systemIsDark) ? 'dark' : 'light';
+        })();
+    </script>
 </head>
 <body>
 <main class="app-shell">
     <header class="app-header">
-        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Interactive math tool</div>
+        <div class="app-toolbar">
+            <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Interactive math tool</div>
+            <label class="theme-control" for="theme-select">
+                <span class="theme-icon" aria-hidden="true">◐</span>
+                <span class="visually-hidden">Appearance</span>
+                <select id="theme-select" aria-label="Appearance">
+                    <option value="system">System theme</option>
+                    <option value="light">Light theme</option>
+                    <option value="dark">Dark theme</option>
+                </select>
+            </label>
+        </div>
         <h1>Lagrange interpolation</h1>
         <p>Find the polynomial that passes through your data points and visualize the result.</p>
     </header>
@@ -85,5 +105,6 @@
 <script src="js/chart.js"></script>
 <script src="js/lagrange.js"></script>
 <script src="js/main.js"></script>
+<script src="js/theme.js"></script>
 </body>
 </html>
