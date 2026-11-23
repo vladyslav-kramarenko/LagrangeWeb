@@ -137,3 +137,59 @@ html[data-theme="dark"] .share-view-btn:hover { background: #373265; }
     .app-toolbar .theme-control.compact-select { min-width: 0; width: 100px; }
     .guide-header .app-toolbar { column-gap: 8px; row-gap: 8px; }
 }
+
+/* Single-row toolbar. Mobile labels are shortened; the theme is icon-only.
+   The native selects remain full-size click targets with accessible names. */
+.toolbar-short { display: none; }
+.app-shell .app-header .app-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 80px 40px;
+    align-items: center;
+    justify-content: stretch;
+    gap: 8px;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+.app-shell .app-header .app-toolbar .eyebrow,
+.app-shell .app-header .app-toolbar .breadcrumb-link {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+}
+.app-shell .app-header .app-toolbar .language-control.compact-select {
+    grid-column: 2;
+    grid-row: 1;
+    width: 80px;
+    min-width: 0;
+}
+.app-shell .app-header .app-toolbar .theme-control.compact-select {
+    grid-column: 3;
+    grid-row: 1;
+    width: 40px;
+    min-width: 0;
+    padding: 0;
+    justify-content: center;
+}
+.app-shell .app-header .app-toolbar .theme-control .select-icon {
+    font-size: 21px;
+    margin: 0;
+    flex-shrink: 0;
+}
+@media (max-width: 720px) {
+    .app-shell .app-header .app-toolbar {
+        grid-template-columns: minmax(0, 1fr) 76px 40px;
+        gap: 7px;
+    }
+    .app-shell .app-header .app-toolbar .language-control.compact-select { width: 76px; }
+    .app-shell .app-header .app-toolbar .theme-control.compact-select { width: 40px; }
+    .app-shell .app-header .app-toolbar .eyebrow { flex: none; flex-basis: auto; font-size: 10px; letter-spacing: .03em; white-space: nowrap; }
+    .app-shell .app-header .app-toolbar .breadcrumb-link { padding: 0; font-size: 13px; white-space: nowrap; }
+    .app-shell .app-header .app-toolbar .toolbar-long { display: none; }
+    .app-shell .app-header .app-toolbar .toolbar-short { display: inline; }
+}
+@media (max-width: 340px) {
+    .app-shell .app-header .app-toolbar { grid-template-columns: minmax(0,1fr) 72px 38px; gap: 5px; }
+    .app-shell .app-header .app-toolbar .language-control.compact-select { width: 72px; padding: 0 6px; }
+    .app-shell .app-header .app-toolbar .theme-control.compact-select { width: 38px; }
+}
