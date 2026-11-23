@@ -81,7 +81,7 @@ function readPoints() {
         const inputs = [...row.querySelectorAll('input')];
         const values = inputs.map(input => {
             const raw = input.value.trim().replace(',', '.');
-            return /^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$/.test(raw) ? Number(raw) : NaN;
+            return /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw) ? Number(raw) : NaN;
         });
         if (!values.every(Number.isFinite)) {
             showInputError('invalidNumber', 'Enter valid X and Y numbers for every point.', row);
