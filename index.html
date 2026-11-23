@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/guide.css">
+    <link rel="stylesheet" href="css/app-extras.css">
+    <link rel="stylesheet" href="css/print.css">
     <script>
         (() => {
             let preference = 'system';
@@ -25,6 +27,15 @@
     <header class="app-header">
         <div class="app-toolbar">
             <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Interactive math tool</div>
+            <label class="language-control" for="language-select">
+                <span aria-hidden="true">🌐</span>
+                <span class="visually-hidden">Language</span>
+                <select id="language-select" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="ru">Русский</option>
+                    <option value="fr">Français</option>
+                </select>
+            </label>
             <label class="theme-control" for="theme-select">
                 <span class="theme-icon" aria-hidden="true">◐</span>
                 <span class="visually-hidden">Appearance</span>
@@ -67,6 +78,7 @@
                     </tr>
                     </tbody>
                 </table>
+                <p id="input-error" class="input-error" role="alert" aria-live="assertive"></p>
                 <div class="point-actions">
                     <button type="button" id="add-row-btn" class="action-btn action-add"><span class="action-symbol" aria-hidden="true">+</span> Add point</button>
                     <button type="button" id="remove-row-btn" class="action-btn action-remove"><span class="action-symbol" aria-hidden="true">−</span> Remove</button>
@@ -100,6 +112,7 @@
                     <span>Enter your points, then calculate.</span>
                 </div>
             </div>
+            <button type="button" id="print-report-btn" class="print-report-btn" hidden><span aria-hidden="true">⎙</span> <span data-i18n="printReport">Print / Save as PDF</span></button>
         </section>
     </div>
     <section class="learn-summary" aria-labelledby="about-lagrange">
@@ -110,11 +123,30 @@
     </section>
     <footer class="app-footer">Lagrange polynomial interpolation</footer>
 </main>
+<section id="print-report" class="print-report" aria-label="Printable interpolation report">
+    <header>
+        <p class="print-kicker" data-i18n="reportKicker">Lagrange interpolation</p>
+        <h1 data-i18n="reportTitle">Interpolation report</h1>
+        <p id="print-date"></p>
+    </header>
+    <p data-i18n="reportIntro">This report summarizes the input points, calculated interpolating polynomial and its graph.</p>
+    <h2 data-i18n="reportPoints">Input points</h2>
+    <table class="report-points"><thead><tr><th>#</th><th>X</th><th>Y</th></tr></thead><tbody id="print-points"></tbody></table>
+    <h2 data-i18n="reportPolynomial">Interpolating polynomial</h2>
+    <div id="print-formula" class="report-formula"></div>
+    <h2 data-i18n="reportGraph">Graph</h2>
+    <img id="print-chart" alt="Interpolation graph">
+    <h2 data-i18n="reportExplanation">Explanation</h2>
+    <p id="print-explanation"></p>
+    <p class="print-footer">lagrange.kramarenko.info</p>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/lagrange.js"></script>
 <script src="js/main.js"></script>
 <script src="js/theme.js"></script>
 <script src="js/analytics.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/print.js"></script>
 </body>
 </html>
