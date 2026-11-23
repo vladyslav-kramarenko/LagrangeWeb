@@ -3,6 +3,8 @@
 :root {
     --chart-text: #6a778b;
     --chart-grid: rgba(105, 119, 140, .22);
+    --chart-curve: #4f46e5;
+    --chart-points: #f97316;
 }
 .app-toolbar {
     display: flex;
@@ -56,6 +58,8 @@ html[data-theme="dark"] {
     --canvas: #0b1320;
     --chart-text: #b4c0d3;
     --chart-grid: rgba(172, 190, 219, .16);
+    --chart-curve: #aaa2ff;
+    --chart-points: #fb923c;
 }
 html[data-theme="dark"] body {
     background: radial-gradient(ellipse at 4% 0%, #1c2143 0, transparent 38%), var(--canvas);
