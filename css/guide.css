@@ -1,0 +1,73 @@
+/* Shared guide navigation on the calculator */
+.guide-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 17px; color: #4f46e5; text-decoration: none; font-size: 14px; font-weight: 700; }
+.guide-link:hover, .learn-summary a:hover, .guide-article a:hover { text-decoration: underline; }
+.learn-summary { margin-top: 22px; padding: 26px 30px; background: var(--surface); border: 1px solid #e8edf4; border-radius: 20px; }
+.learn-summary h2 { margin: 4px 0 12px; font-size: clamp(20px, 2.5vw, 25px); font-weight: 700; letter-spacing: -.025em; }
+.learn-summary p { max-width: 900px; color: var(--muted); margin: 0 0 12px; line-height: 1.7; font-size: 14px; }
+.learn-summary strong { color: var(--ink); }
+.learn-summary a { color: #4f46e5; text-decoration: none; font-weight: 700; font-size: 14px; }
+/* Dedicated guide page */
+.guide-shell { width: min(940px, 100%); }
+.guide-header { margin-bottom: 25px; }
+.guide-header .eyebrow { margin: 26px 0 15px; }
+.guide-header h1 { font-size: clamp(32px, 4.6vw, 48px); max-width: 800px; }
+.breadcrumb-link { font-size: 13px; font-weight: 700; text-decoration: none; color: #4f46e5; }
+.guide-article { display: flex; flex-direction: column; gap: 18px; }
+.guide-toc, .guide-section { background: var(--surface); border: 1px solid #e8edf4; border-radius: 18px; }
+.guide-toc { padding: 19px 24px; display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; }
+.guide-toc strong { margin-right: 10px; font-size: 13px; }
+.guide-toc a { color: #4f46e5; font-size: 13px; text-decoration: none; }
+.guide-section { padding: 30px 34px; scroll-margin-top: 24px; }
+.guide-section h2 { font-size: clamp(22px, 3vw, 28px); margin: 4px 0 14px; font-weight: 730; letter-spacing: -.025em; }
+.guide-section h3 { margin: 25px 0 10px; font-size: 17px; font-weight: 700; }
+.guide-section p { margin: 0 0 15px; color: var(--muted); font-size: 15px; line-height: 1.75; }
+.guide-section p:last-child { margin-bottom: 0; }
+.guide-section strong { color: var(--ink); }
+.guide-section a { color: #4f46e5; text-decoration: none; font-weight: 650; }
+.math-card { background: #f7f7ff; border: 1px solid #e6e7ff; border-radius: 12px; padding: 19px 22px; margin: 17px 0; overflow-x: auto; }
+.math-label { font-size: 11px; font-weight: 750; letter-spacing: .09em; color: #6b70a0; }
+.math-equation { margin-top: 9px; font-size: clamp(19px, 3.1vw, 25px); line-height: 1.55; font-weight: 600; overflow-wrap: anywhere; }
+.math-note { margin-top: 7px; font-size: 12px; color: var(--muted); }
+.table-wrap { overflow-x: auto; }
+.guide-data-table { border-collapse: collapse; width: min(420px, 100%); margin: 15px 0; font-size: 15px; }
+.guide-data-table th, .guide-data-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.guide-data-table th { font-weight: 650; }
+.guide-data-table thead { background: #f5f7fc; }
+.equation-list { display: grid; gap: 8px; margin: 15px 0; }
+.equation-list > div { background: #f8faff; border: 1px solid var(--line); border-radius: 9px; padding: 12px 16px; font-size: clamp(15px, 2.4vw, 19px); overflow-wrap: anywhere; }
+.answer-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding: 19px 22px; margin: 16px 0; background: #f1f0ff; border-radius: 12px; border: 1px solid #dcd8ff; }
+.answer-card span { color: #6b70a0; font-size: 11px; font-weight: 750; letter-spacing: .1em; }
+.answer-card strong { font-size: 23px; color: #4f46e5; }
+.guide-steps { padding-left: 24px; color: var(--muted); line-height: 1.7; font-size: 15px; }
+.guide-steps li { padding-left: 4px; margin-bottom: 11px; }
+.guide-cta { display: inline-flex; gap: 14px; margin-top: 10px; padding: 13px 20px; background: #4f46e5; border-radius: 10px; color: #fff !important; text-decoration: none !important; font-size: 14px; }
+.guide-cta:hover { background: #4338ca; }
+.faq-item { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 14px; }
+.faq-item h3 { margin: 0 0 8px; }
+.faq-item p { margin-bottom: 0; }
+.app-footer a { color: inherit; }
+/* Dark scheme */
+html[data-theme="dark"] .learn-summary, html[data-theme="dark"] .guide-toc, html[data-theme="dark"] .guide-section { border-color: #29364a; }
+html[data-theme="dark"] .guide-link, html[data-theme="dark"] .learn-summary a, html[data-theme="dark"] .guide-section a, html[data-theme="dark"] .guide-toc a, html[data-theme="dark"] .breadcrumb-link { color: #b2abff; }
+html[data-theme="dark"] .math-card { background: #1b2341; border-color: #39416b; }
+html[data-theme="dark"] .math-label, html[data-theme="dark"] .answer-card span { color: #b9bbeb; }
+html[data-theme="dark"] .guide-data-table thead { background: #1b293d; }
+html[data-theme="dark"] .equation-list > div { background: #182538; }
+html[data-theme="dark"] .answer-card { background: #1c2542; border-color: #39416b; }
+html[data-theme="dark"] .answer-card strong { color: #c0b9ff; }
+html[data-theme="dark"] .guide-cta { color: white !important; background: #6154db; }
+html[data-theme="dark"] .guide-cta:hover { background: #7669f1; }
+@media (max-width: 700px) {
+    .guide-shell { padding-top: 32px; }
+    .guide-section { padding: 24px; }
+    .guide-toc { padding: 17px 20px; gap: 11px 15px; }
+    .learn-summary { padding: 23px; }
+}
+@media (max-width: 420px) {
+    .guide-section { padding: 22px 18px; border-radius: 15px; }
+    .guide-toc { padding: 16px 18px; }
+    .guide-header .eyebrow { margin-top: 22px; }
+    .learn-summary { padding: 20px 17px; border-radius: 16px; }
+    .math-card { padding: 15px; }
+    .math-equation { font-size: 18px; }
+}
