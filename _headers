@@ -1,0 +1,8 @@
+# Static-asset preview URLs are excluded from indexing.
+# These hostname-specific rules remain safe if merged into production.
+# The production domain lagrange.kramarenko.info does NOT match.
+https://:version.:subdomain.workers.dev/*
+  X-Robots-Tag: noindex
+
+https://dev.lagrange.kramarenko.info/*
+  X-Robots-Tag: noindex
