@@ -41,7 +41,7 @@ html[data-theme="dark"] .share-view-btn:hover { background: #373265; }
 /* One source of truth for the shared navigation. */
 .app-shell .app-header .app-toolbar {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 78px 40px;
+    grid-template-columns: minmax(0, 1fr) 64px 40px;
     align-items: center;
     justify-content: initial;
     column-gap: 8px;
@@ -104,7 +104,7 @@ html[data-theme="dark"] .share-view-btn:hover { background: #373265; }
     border: 1px solid #dce3ed;
     white-space: nowrap;
 }
-.app-shell .app-header .app-toolbar > .language-control.compact-select { grid-column: 2; grid-row: 1; width: 78px; }
+.app-shell .app-header .app-toolbar > .language-control.compact-select { grid-column: 2; grid-row: 1; width: 64px; }
 .app-shell .app-header .app-toolbar > .theme-control.compact-select { grid-column: 3; grid-row: 1; width: 40px; padding: 0; }
 .app-toolbar .compact-select .select-icon { flex: 0 0 auto; font-size: 15px; line-height: 1; }
 .app-toolbar .theme-control.compact-select .select-icon { font-size: 23px; color: var(--accent); }
@@ -142,8 +142,8 @@ html[data-theme="dark"] .sign-toggle:hover { background: #424967; }
 html[data-theme="dark"] .input-error { color: #fca5a5; }
 html[data-theme="dark"] .print-report-btn { border-color: #35445b; }
 @media (max-width: 720px) {
-    .app-shell .app-header .app-toolbar { grid-template-columns: minmax(0, 1fr) 72px 40px; column-gap: 7px; }
-    .app-shell .app-header .app-toolbar > .language-control.compact-select { width: 72px; }
+    .app-shell .app-header .app-toolbar { grid-template-columns: minmax(0, 1fr) 64px 40px; column-gap: 7px; }
+    .app-shell .app-header .app-toolbar > .language-control.compact-select { width: 64px; }
     .app-shell .app-header .app-toolbar > .theme-control.compact-select { width: 40px; }
     .app-toolbar .toolbar-leading { gap: 7px; }
     .app-toolbar .toolbar-leading .toolbar-long { display: none; }
@@ -156,7 +156,7 @@ html[data-theme="dark"] .print-report-btn { border-color: #35445b; }
     .sign-toggle { right: 3px; width: 35px; height: 35px; }
 }
 @media (max-width: 320px) {
-    .app-shell .app-header .app-toolbar { grid-template-columns: minmax(0, 1fr) 68px 38px; column-gap: 5px; }
-    .app-shell .app-header .app-toolbar > .language-control.compact-select { width: 68px; }
+    .app-shell .app-header .app-toolbar { grid-template-columns: minmax(0, 1fr) 62px 38px; column-gap: 5px; }
+    .app-shell .app-header .app-toolbar > .language-control.compact-select { width: 62px; }
     .app-shell .app-header .app-toolbar > .theme-control.compact-select { width: 38px; }
 }
