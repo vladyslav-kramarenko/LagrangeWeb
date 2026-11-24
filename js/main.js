@@ -110,6 +110,10 @@ function simplifyPolynomial() {
         showInputError('calculationError', 'Could not calculate this polynomial. Check your input points.');
         return;
     }
+    if (!polynomialAccurateAtPoints(coefficients, xValues, yValues)) {
+        showInputError('numericalInstability', 'Numerical instability: try fewer points or a smaller range of X values.');
+        return;
+    }
     const polynomialHtml = convertPolynomialToString(coefficients);
     document.getElementById('output').innerHTML = polynomialHtml;
     drawChart(coefficients, Math.min(...xValues), Math.max(...xValues), xValues, yValues);
