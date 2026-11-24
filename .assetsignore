@@ -8,3 +8,6 @@ wrangler.jsonc
 README.md
 LICENSE.md
 .assetsignore
+**/.github
+PRODUCTION.md
+.gitignore
