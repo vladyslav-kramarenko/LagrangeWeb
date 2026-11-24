@@ -78,6 +78,21 @@ function polynomialPlyNumerator(x, y) {
     return result;
 }
 
+function polynomialAccurateAtPoints(coefficients, xValues, yValues) {
+    if (!coefficients || coefficients.some(value => !Number.isFinite(value))) return false;
+    for (let i = 0; i < xValues.length; i++) {
+        let evaluated = 0;
+        for (let degree = coefficients.length - 1; degree >= 0; degree--) {
+            evaluated = evaluated * xValues[i] + coefficients[degree];
+        }
+        const tolerance = 1e-6 * Math.max(1, Math.abs(yValues[i]));
+        if (!Number.isFinite(evaluated) || Math.abs(evaluated - yValues[i]) > tolerance) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function convertPolynomialToString(polynomial) {
     const terms = [];
     const epsilon = 1e-9;
