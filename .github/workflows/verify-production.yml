@@ -70,6 +70,18 @@ jobs:
           set -euo pipefail
           tmp="$(mktemp -d)"
           trap 'rm -rf "$tmp"' EXIT
+          # Cloudflare builds may finish after GitHub Actions starts: check the
+          # deployed source marker rather than testing an older release.
+          current=0
+          for attempt in $(seq 1 24); do
+            if curl -fsSL --connect-timeout 10 --max-time 20 "$SITE/js/chart.js?check=$attempt" | grep -q 'function redrawLagrangeChart()'; then
+              current=1
+              break
+            fi
+            echo "Waiting for updated Cloudflare release ($attempt/24)"
+            sleep 5
+          done
+          test "$current" -eq 1 || { echo 'ERROR: Cloudflare is still serving the previous release'; exit 1; }
           fetch() {
             local path="$1" output="$2" headers="$3"
             curl --fail --silent --show-error --location \
@@ -115,6 +127,18 @@ jobs:
           getent ahostsv4 "$HOST" | head -8 || true
           tmp="$(mktemp -d)"
           trap 'rm -rf "$tmp"' EXIT
+          # Cloudflare builds may finish after GitHub Actions starts: check the
+          # deployed source marker rather than testing an older release.
+          current=0
+          for attempt in $(seq 1 24); do
+            if curl -fsSL --connect-timeout 10 --max-time 20 "$SITE/js/chart.js?check=$attempt" | grep -q 'function redrawLagrangeChart()'; then
+              current=1
+              break
+            fi
+            echo "Waiting for updated Cloudflare release ($attempt/24)"
+            sleep 5
+          done
+          test "$current" -eq 1 || { echo 'ERROR: Cloudflare is still serving the previous release'; exit 1; }
           fetch() {
             local path="$1" name="$2"
             curl --fail --silent --show-error --location --retry 3 --retry-delay 2 \
@@ -165,7 +189,7 @@ jobs:
   browser-e2e:
     name: Mobile browser functional test
     runs-on: ubuntu-latest
-    needs: smoke-http
+    needs: [smoke-http, live-domain]
     container:
       image: mcr.microsoft.com/playwright:v1.56.1-noble
     steps:
