@@ -56,3 +56,44 @@ jobs:
           test -s css/theme.css
           test -s css/app-extras.css
           test -s assets/vk-mark.svg
+
+  smoke-http:
+    name: Public Worker HTTP & SEO smoke test
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - name: Verify Worker static pages, assets, and noindex headers
+        shell: bash
+        env:
+          SITE: https://lagrangeweb.kramarenko-vladyslav-92.workers.dev
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          fetch() {
+            local path="$1" output="$2" headers="$3"
+            curl --fail --silent --show-error --location \
+              --retry 8 --retry-delay 3 --retry-all-errors \
+              --connect-timeout 15 --max-time 45 \
+              -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126.0 Safari/537.36' \
+              --dump-header "$headers" --output "$output" "$SITE$path"
+          }
+          fetch '/' "$tmp/home" "$tmp/home.headers"
+          fetch '/guide/' "$tmp/guide" "$tmp/guide.headers"
+          fetch '/result/?p=%5B%5B1%2C2%5D%2C%5B2%2C5%5D%2C%5B3%2C10%5D%5D' "$tmp/result" "$tmp/result.headers"
+          fetch '/js/main.js' "$tmp/main.js" "$tmp/asset.headers"
+          fetch '/css/style.css' "$tmp/style.css" "$tmp/css.headers"
+          fetch '/robots.txt' "$tmp/robots.txt" "$tmp/robots.headers"
+          fetch '/sitemap.xml' "$tmp/sitemap.xml" "$tmp/sitemap.headers"
+          grep -q 'Lagrange interpolation calculator' "$tmp/home"
+          grep -q 'rel="canonical" href="https://lagrange.kramarenko.info/"' "$tmp/home"
+          grep -q 'How Lagrange polynomial interpolation works' "$tmp/guide"
+          grep -q 'rel="canonical" href="https://lagrange.kramarenko.info/guide/"' "$tmp/guide"
+          grep -q 'name="robots" content="noindex,follow"' "$tmp/result"
+          grep -q 'function simplifyPolynomial()' "$tmp/main.js"
+          grep -q 'https://lagrange.kramarenko.info/sitemap.xml' "$tmp/robots.txt"
+          grep -q 'https://lagrange.kramarenko.info/guide/' "$tmp/sitemap.xml"
+          for file in home.headers guide.headers result.headers; do
+            grep -qi '^x-robots-tag:.*noindex' "$tmp/$file" || { echo "Missing noindex for $file"; cat "$tmp/$file"; exit 1; }
+          done
+          echo "Worker HTTP, static asset, canonical and preview noindex checks passed."
