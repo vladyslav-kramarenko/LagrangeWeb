@@ -1,0 +1,58 @@
+name: Verify production release
+
+on:
+  push:
+    branches: [production]
+  pull_request:
+    branches: [production]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify production Worker identity
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const assert = require('node:assert/strict');
+          const config = JSON.parse(fs.readFileSync('wrangler.jsonc', 'utf8'));
+          assert.equal(config.name, 'lagrangeweb-prod', 'Incorrect production Worker name');
+          assert.equal(config.assets.directory, './');
+          assert.equal(config.workers_dev, true, 'Keep temporary worker URL available until cutover');
+          const headers = fs.readFileSync('_headers', 'utf8');
+          assert.ok(headers.includes('https://lagrangeweb-prod.kramarenko-vladyslav-92.workers.dev/*'));
+          assert.ok(headers.includes('X-Robots-Tag: noindex'));
+          assert.ok(!headers.includes('https://lagrange.kramarenko.info/*'), 'Do not accidentally block production indexing');
+          const home = fs.readFileSync('index.html', 'utf8');
+          const guide = fs.readFileSync('guide/index.html', 'utf8');
+          const result = fs.readFileSync('result/index.html', 'utf8');
+          assert.ok(home.includes('rel="canonical" href="https://lagrange.kramarenko.info/"'));
+          assert.ok(guide.includes('rel="canonical" href="https://lagrange.kramarenko.info/guide/"'));
+          assert.ok(result.includes('name="robots" content="noindex,follow"'));
+          const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
+          assert.ok(!sitemap.includes('/result/'));
+          console.log('Production config, indexation, and canonical checks passed');
+          NODE
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          for file in js/*.js; do
+            node --check "$file"
+          done
+      - name: Verify static pages and dependencies
+        shell: bash
+        run: |
+          test -s index.html
+          test -s guide/index.html
+          test -s result/index.html
+          test -s css/style.css
+          test -s css/theme.css
+          test -s css/app-extras.css
+          test -s assets/vk-mark.svg
