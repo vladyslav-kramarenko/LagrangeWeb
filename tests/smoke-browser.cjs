@@ -62,6 +62,10 @@ const assert = require('node:assert/strict');
     assert.equal(resultResponse.status(), 200);
     assert.match(await page.locator('#result-formula').innerHTML(), /x<sup>2<\/sup>/);
     assert.equal(await page.locator('#result-content').isVisible(), true);
+    await page.locator('#theme-select').selectOption('light');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'light');
+    await page.locator('#theme-select').selectOption('dark');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
     await page.locator('#language-select').selectOption('de');
     const translationDiagnostics = await page.evaluate(() => ({
       lang: document.documentElement.lang,
