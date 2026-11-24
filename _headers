@@ -1,6 +1,6 @@
 # Block search indexing of the temporary preview and workers.dev hosts.
 # The real production domain (lagrange.kramarenko.info) is intentionally excluded.
-https://lagrangeweb-prod.kramarenko-vladyslav-92.workers.dev/*
+https://lagrangeweb.kramarenko-vladyslav-92.workers.dev/*
   X-Robots-Tag: noindex
 
 https://lagrangeweb-dev.kramarenko-vladyslav-92.workers.dev/*
