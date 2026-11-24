@@ -33,6 +33,11 @@ const assert = require('node:assert/strict');
     assert.equal(await page.locator('#language-select').inputValue(), 'uk');
     await page.locator('#language-select').selectOption('en');
 
+    await page.locator('input[name="x[]"]').nth(0).fill('2');
+    await page.locator('.sign-toggle').first().click();
+    assert.equal(await page.locator('input[name="x[]"]').nth(0).inputValue(), '-2');
+    await page.locator('.sign-toggle').first().click();
+    assert.equal(await page.locator('input[name="x[]"]').nth(0).inputValue(), '2');
     await page.locator('input[name="x[]"]').nth(0).fill('1');
     await page.locator('input[name="y[]"]').nth(0).fill('2');
     await page.locator('input[name="x[]"]').nth(1).fill('2');
