@@ -44,7 +44,11 @@
         selector.value = lang;
         const compactLanguage = document.getElementById('language-current');
         if (compactLanguage) compactLanguage.textContent = lang.toUpperCase();
-        if (typeof chart !== 'undefined' && chart && chart.data.datasets.length >= 2) {
+        // On the result page, <canvas id="chart"> is exposed as window.chart
+        // before Chart.js has created a chart instance. Do not treat it as one.
+        if (typeof chart !== 'undefined' && chart && chart.data &&
+            Array.isArray(chart.data.datasets) && chart.data.datasets.length >= 2 &&
+            typeof chart.update === 'function') {
             chart.data.datasets[0].label = translate('chartPolynomial');
             chart.data.datasets[1].label = translate('chartPoints');
             chart.update('none');
