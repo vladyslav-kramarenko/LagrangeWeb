@@ -98,6 +98,70 @@ jobs:
           done
           echo "Worker HTTP, static asset, canonical and preview noindex checks passed."
 
+
+  live-domain:
+    name: Live custom-domain HTTP, HTTPS & SEO test
+    runs-on: ubuntu-latest
+    needs: verify
+    steps:
+      - name: Audit canonical production domain
+        shell: bash
+        env:
+          SITE: https://lagrange.kramarenko.info
+          HOST: lagrange.kramarenko.info
+        run: |
+          set -euo pipefail
+          echo "DNS resolution:"
+          getent ahostsv4 "$HOST" | head -8 || true
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          fetch() {
+            local path="$1" name="$2"
+            curl --fail --silent --show-error --location --retry 3 --retry-delay 2 \
+              --connect-timeout 15 --max-time 40 \
+              --dump-header "$tmp/$name.headers" --output "$tmp/$name" "$SITE$path"
+            echo "Received $path:"
+            grep -Ei '^(HTTP/|content-type:|x-robots-tag:|location:|strict-transport-security:)' "$tmp/$name.headers" || true
+          }
+          fetch '/' home
+          fetch '/guide/' guide
+          fetch '/result/?p=%5B%5B1%2C2%5D%2C%5B2%2C5%5D%2C%5B3%2C10%5D%5D' result
+          fetch '/robots.txt' robots
+          fetch '/sitemap.xml' sitemap
+          fetch '/assets/vk-mark.svg' logo
+          fetch '/js/main.js' main
+          fetch '/js/theme.js?v=20261123-2' theme
+          fetch '/js/i18n.js' i18n
+          fetch '/js/result.js' resultjs
+          fetch '/css/app-extras.css' css
+          grep -q 'Lagrange interpolation calculator' "$tmp/home"
+          grep -q 'rel="canonical" href="https://lagrange.kramarenko.info/"' "$tmp/home"
+          grep -q 'How Lagrange polynomial interpolation works' "$tmp/guide"
+          grep -q 'rel="canonical" href="https://lagrange.kramarenko.info/guide/"' "$tmp/guide"
+          grep -q 'name="robots" content="noindex,follow"' "$tmp/result"
+          grep -q 'function simplifyPolynomial()' "$tmp/main"
+          grep -q 'function applyTheme(' "$tmp/theme"
+          grep -q 'function initialLanguage()' "$tmp/i18n"
+          grep -q 'lagrange.kramarenko.info' "$tmp/sitemap"
+          grep -q '/guide/' "$tmp/sitemap"
+          grep -q 'Sitemap: https://lagrange.kramarenko.info/sitemap.xml' "$tmp/robots"
+          if grep -Eqi '(^x-robots-tag:.*noindex|<meta[^>]*name="robots"[^>]*noindex)' "$tmp/home.headers" "$tmp/home" "$tmp/guide.headers" "$tmp/guide"; then
+            echo 'ERROR: Public home or guide is noindexed'
+            exit 1
+          fi
+          if grep -Eqi '^x-robots-tag:.*noindex' "$tmp/result.headers"; then
+            echo 'NOTE: Result page also protected by X-Robots-Tag'
+          fi
+          # Diagnose (and require) HTTP redirect to HTTPS; not just a successful HTTPS response.
+          redirect_status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 25 "http://$HOST/" || true)"
+          redirect_url="$(curl -sS -o /dev/null -w '%{redirect_url}' --max-time 25 "http://$HOST/" || true)"
+          echo "HTTP redirect: status=$redirect_status location=$redirect_url"
+          if [[ ! "$redirect_status" =~ ^(301|302|307|308)$ ]] || [[ "$redirect_url" != https://* ]]; then
+            echo "ERROR: HTTP does not redirect to HTTPS"
+            exit 1
+          fi
+          echo 'PASS: Live production custom domain, canonical, indexing, static assets and HTTPS redirect.'
+
   browser-e2e:
     name: Mobile browser functional test
     runs-on: ubuntu-latest
@@ -108,7 +172,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install matching Playwright runtime
         run: npm install --no-save playwright@1.56.1
-      - name: Exercise live calculator and exports
+      - name: Exercise Worker calculator and exports
         env:
           SITE: https://lagrangeweb.kramarenko-vladyslav-92.workers.dev
+        run: node tests/smoke-browser.cjs
+      - name: Exercise canonical production domain in mobile browser
+        env:
+          SITE: https://lagrange.kramarenko.info
         run: node tests/smoke-browser.cjs
