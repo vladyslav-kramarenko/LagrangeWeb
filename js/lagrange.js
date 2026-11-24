@@ -79,28 +79,22 @@ function polynomialPlyNumerator(x, y) {
 }
 
 function convertPolynomialToString(polynomial) {
-    let out = "";
-    let e = 0.000000001;
-    for (let i = 0; i < polynomial.length; i++) {
-        if (Math.abs(polynomial[i]) > e) {
-            if (i === 0) {
-                out = "" + Math.abs(polynomial[i]).toFixed(3);
-            } else if (i === 1) {
-                out = Math.abs(polynomial[i]).toFixed(3) + "x" + out;
-            } else {
-                out = Math.abs(polynomial[i]).toFixed(3) + "x<sup>" + i + "</sup>" + out;
-            }
-
-            if (polynomial[i] >= 0) {
-                if (i !== polynomial.length - 1) {
-                    out = " + " + out;
-                }
-            } else {
-                out = " - " + out;
-            }
-        }
+    const terms = [];
+    const epsilon = 1e-9;
+    for (let degree = polynomial.length - 1; degree >= 0; degree--) {
+        const value = polynomial[degree];
+        if (Math.abs(value) <= epsilon) continue;
+        const absoluteValue = Math.abs(value).toFixed(3);
+        const variable = degree === 0 ? '' : degree === 1 ? 'x' : 'x<sup>' + degree + '</sup>';
+        terms.push({ negative: value < 0, text: absoluteValue + variable });
     }
-    return out || "0";
+    if (!terms.length) return '0';
+    return terms.map((term, index) => {
+        const prefix = index === 0
+            ? (term.negative ? '-' : '')
+            : (term.negative ? ' - ' : ' + ');
+        return prefix + term.text;
+    }).join('');
 }
 
 
