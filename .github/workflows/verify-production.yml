@@ -23,11 +23,11 @@ jobs:
           const fs = require('node:fs');
           const assert = require('node:assert/strict');
           const config = JSON.parse(fs.readFileSync('wrangler.jsonc', 'utf8'));
-          assert.equal(config.name, 'lagrangeweb-prod', 'Incorrect production Worker name');
+          assert.equal(config.name, 'lagrangeweb', 'Incorrect production Worker name');
           assert.equal(config.assets.directory, './');
           assert.equal(config.workers_dev, true, 'Keep temporary worker URL available until cutover');
           const headers = fs.readFileSync('_headers', 'utf8');
-          assert.ok(headers.includes('https://lagrangeweb-prod.kramarenko-vladyslav-92.workers.dev/*'));
+          assert.ok(headers.includes('https://lagrangeweb.kramarenko-vladyslav-92.workers.dev/*'));
           assert.ok(headers.includes('X-Robots-Tag: noindex'));
           assert.ok(!headers.includes('https://lagrange.kramarenko.info/*'), 'Do not accidentally block production indexing');
           const home = fs.readFileSync('index.html', 'utf8');
