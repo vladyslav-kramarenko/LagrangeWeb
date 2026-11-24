@@ -8,34 +8,36 @@ function getChartTheme() {
     };
 }
 
+// Rebuild the graph from plain numeric arrays instead of mutating Chart.js option
+// resolver proxies. Mutating resolved proxies can trigger recursive-scriptable errors.
+let lagrangeDrawArgs = null;
+
 function updateChartTheme() {
     const colors = getChartTheme();
-    Chart.defaults.color = colors.text;
-    Chart.defaults.borderColor = colors.grid;
-    if (typeof chart === 'undefined' || !chart) return;
-    if (chart.data.datasets && chart.data.datasets.length >= 2) {
-        chart.data.datasets[0].borderColor = colors.curve;
-        chart.data.datasets[1].borderColor = colors.points;
+    if (typeof Chart !== 'undefined') {
+        Chart.defaults.color = colors.text;
+        Chart.defaults.borderColor = colors.grid;
     }
-    chart.options.plugins = chart.options.plugins || {};
-    chart.options.plugins.legend = chart.options.plugins.legend || {};
-    chart.options.plugins.legend.labels = chart.options.plugins.legend.labels || {};
-    chart.options.plugins.legend.labels.color = colors.text;
-    for (const axis of ['x', 'y']) {
-        if (!chart.options.scales || !chart.options.scales[axis]) continue;
-        chart.options.scales[axis].ticks = chart.options.scales[axis].ticks || {};
-        chart.options.scales[axis].ticks.color = colors.text;
-        chart.options.scales[axis].grid = chart.options.scales[axis].grid || {};
-        chart.options.scales[axis].grid.color = colors.grid;
-        chart.options.scales[axis].border = chart.options.scales[axis].border || {};
-        chart.options.scales[axis].border.color = colors.grid;
-    }
-    chart.update('none');
+    redrawLagrangeChart();
 }
+
+function redrawLagrangeChart() {
+    if (!lagrangeDrawArgs) return;
+    const previous = lagrangeDrawArgs;
+    drawChart(previous.coefficients, previous.minX, previous.maxX,
+              previous.pointsXValues, previous.pointsYValues);
+}
+window.redrawLagrangeChart = redrawLagrangeChart;
 
 window.updateChartTheme = updateChartTheme;
 
 function drawChart(coefficients, minX, maxX, pointsXValues, pointsYValues) {
+    lagrangeDrawArgs = {
+        coefficients: [...coefficients],
+        minX, maxX,
+        pointsXValues: [...pointsXValues],
+        pointsYValues: [...pointsYValues]
+    };
     const theme = getChartTheme();
 
     const xValues = [];
