@@ -41,6 +41,12 @@
         return;
     }
 
+    if (!polynomialAccurateAtPoints(coefficients, points.map(p => p.x), points.map(p => p.y))) {
+        error.textContent = t('numericalInstability');
+        error.hidden = false;
+        window.addEventListener('languagechange', () => { error.textContent = t('numericalInstability'); });
+        return;
+    }
     const polynomialHtml = convertPolynomialToString(coefficients);
     document.getElementById('result-formula').innerHTML = polynomialHtml;
     document.getElementById('point-summary').textContent = t('resultPoints') + ': ' + points.length;
