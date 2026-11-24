@@ -12,7 +12,7 @@ const assert = require('node:assert/strict');
     userAgent: 'Mozilla/5.0 (Linux; Android 15; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36'
   });
   const errors = [];
-  page.on('pageerror', e => errors.push(String(e)));
+  page.on('pageerror', e => errors.push(page.url() + ': ' + (e.stack || String(e))));
 
   try {
     const home = await page.goto(base + '/', {waitUntil:'networkidle', timeout: 60000});
@@ -57,6 +57,9 @@ const assert = require('node:assert/strict');
     assert.equal(resultResponse.status(), 200);
     assert.match(await page.locator('#result-formula').innerHTML(), /x<sup>2<\/sup>/);
     assert.equal(await page.locator('#result-content').isVisible(), true);
+    await page.locator('#language-select').selectOption('de');
+    assert.match(await page.locator('h1').first().innerText(), /Diagramm/);
+    await page.locator('#language-select').selectOption('en');
     const [download] = await Promise.all([
       page.waitForEvent('download', {timeout:30000}),
       page.locator('#download-png').click()
