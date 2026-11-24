@@ -63,6 +63,17 @@ const assert = require('node:assert/strict');
     assert.match(await page.locator('#result-formula').innerHTML(), /x<sup>2<\/sup>/);
     assert.equal(await page.locator('#result-content').isVisible(), true);
     await page.locator('#language-select').selectOption('de');
+    const translationDiagnostics = await page.evaluate(() => ({
+      lang: document.documentElement.lang,
+      select: document.getElementById('language-select').value,
+      current: document.getElementById('language-current')?.textContent,
+      helper: typeof window.lagrangeI18n,
+      translation: window.lagrangeI18n?.t('resultHeading'),
+      heading: document.querySelector('h1')?.textContent,
+      scripts: [...document.scripts].map(script => script.src).filter(src => /i18n/.test(src))
+    }));
+    console.log('Result locale diagnostics:', JSON.stringify(translationDiagnostics));
+    console.log('Browser errors:', JSON.stringify(errors));
     assert.match(await page.locator('h1').first().innerText(), /Diagramm/);
     await page.locator('#language-select').selectOption('en');
     const [download] = await Promise.all([
