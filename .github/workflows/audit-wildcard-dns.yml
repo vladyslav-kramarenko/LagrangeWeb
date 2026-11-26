@@ -1,0 +1,63 @@
+name: Read-only DNS wildcard and legacy host audit
+on:
+  push:
+    branches:
+      - audit/dns-wildcard-20261126
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DNS, HTTPS and historical path checks (no mutations)
+        shell: bash
+        run: |
+          set -u
+          echo '====== AUTHORITATIVE DNS ======'
+          dig +time=3 +tries=1 +short NS kramarenko.info || true
+          echo '====== HOST RESOLUTION ======'
+          hosts=(
+            kramarenko.info
+            www.kramarenko.info
+            old.kramarenko.info
+            lagrange.kramarenko.info
+            dev.kramarenko.info
+            numerical.kramarenko.info
+            leo-racer.kramarenko.info
+            dev.leo-racer.kramarenko.info
+            piano.kramarenko.info
+            mail.kramarenko.info
+            random-audit-20261126-xy92.kramarenko.info
+            random-two-level-xy92.foo.kramarenko.info
+          )
+          for host in "${hosts[@]}"; do
+            echo "=== HOST $host ==="
+            for rr in A AAAA CNAME; do
+              answer="$(dig +time=3 +tries=1 +short "$rr" "$host" | tr '\n' ',' | sed 's/,$//')"
+              echo "DNS $rr: ${answer:-none}"
+            done
+            answer="$(curl -sSIL --max-time 10 --max-redirs 3 -o /dev/null -w 'status:%{http_code} final:%{url_effective} remote:%{remote_ip} tls:%{ssl_verify_result}' "https://$host/" 2>/dev/null || true)"
+            echo "HTTPS ${answer:-unreachable}"
+          done
+          echo '====== LEGACY PATH VERIFICATION ======'
+          paths=(
+            /assets/documents/2024_DEV_Kramarenko_Vladyslav.pdf
+            /assets/documents/2024_Java_SD_Kramarenko_Vladyslav.pdf
+            /img/certificates/bachelor_diploma.pdf
+            /img/certificates/masters_diploma.jpg
+            /img/portfolio/scratching_post.skp
+            /portfolio/Just-Cat
+            /portfolio/ecofuel-plus
+            /home
+          )
+          for host in kramarenko.info www.kramarenko.info old.kramarenko.info; do
+            for path in "${paths[@]}"; do
+              answer="$(curl -sS --max-time 12 -o /dev/null -w '%{http_code} %{content_type} %{redirect_url}' "https://$host$path" 2>/dev/null || true)"
+              echo "$host$path => ${answer:-unreachable}"
+            done
+          done
+          echo '====== RANDOM HOST RESPONSE HEADERS ======'
+          for host in old.kramarenko.info random-audit-20261126-xy92.kramarenko.info; do
+            echo "=== $host ==="
+            curl -sSI --max-time 12 "https://$host/" 2>/dev/null | grep -Ei '^(HTTP/|server:|location:|content-type:|x-robots-tag:|cf-ray:|cache-control:)' | head -16 || true
+          done
