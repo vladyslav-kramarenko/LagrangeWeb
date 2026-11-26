@@ -61,3 +61,42 @@ jobs:
             echo "=== $host ==="
             curl -sSI --max-time 12 "https://$host/" 2>/dev/null | grep -Ei '^(HTTP/|server:|location:|content-type:|x-robots-tag:|cf-ray:|cache-control:)' | head -16 || true
           done
+
+      - name: Identify the page behind the wildcard and inspect SEO directives
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request, re, hashlib, html
+          hosts = [
+              'kramarenko.info',
+              'www.kramarenko.info',
+              'old.kramarenko.info',
+              'lagrange.kramarenko.info',
+              'dev.kramarenko.info',
+              'numerical.kramarenko.info',
+              'leo-racer.kramarenko.info',
+              'dev.leo-racer.kramarenko.info',
+              'piano.kramarenko.info',
+              'mail.kramarenko.info',
+              'random-audit-20261126-xy92.kramarenko.info'
+          ]
+          print('====== HTML IDENTITY AND ROBOTS ======', flush=True)
+          for host in hosts:
+              url = 'https://' + host + '/'
+              try:
+                  req=urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0 DNS-Audit-ReadOnly'})
+                  with urllib.request.urlopen(req,timeout=12) as response:
+                      body=response.read(400000).decode('utf-8','replace')
+                      title=re.search(r'<title[^>]*>(.*?)</title>', body, re.I|re.S)
+                      canonical=re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)', body, re.I)
+                      robots=re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\']([^"\']+)', body, re.I)
+                      def clean(v): return re.sub(r'\s+',' ',html.unescape(v or ''))[:130]
+                      print('HTML',host,'status',response.status,'sha256',hashlib.sha256(body.encode()).hexdigest()[:18],
+                            'title',clean(title.group(1) if title else None),
+                            'canonical',clean(canonical.group(1) if canonical else None),
+                            'robots',clean(robots.group(1) if robots else None),
+                            'header-x-robots',response.headers.get('x-robots-tag'),
+                            'final',response.url,flush=True)
+              except Exception as e:
+                  print('HTML',host,'ERROR',type(e).__name__,str(e)[:150],flush=True)
+          PY
