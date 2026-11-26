@@ -1,20 +1,34 @@
-// GA4 is enabled only on the public production hostname.
-// Preview and development workers deliberately send no analytics hits.
-(() => {
-    if (window.location.hostname !== 'lagrange.kramarenko.info') return;
-
-    const measurementId = 'G-R991NWN37F';
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    // Never transmit URL query parameters: share links can contain input coordinates.
-    window.gtag('config', measurementId, {
-        page_location: window.location.origin + window.location.pathname,
-        page_path: window.location.pathname
-    });
-
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
-    document.head.appendChild(script);
+(function analytics(){
+ const hosts=["kramarenko.info","numerical.kramarenko.info","lagrange.kramarenko.info"],id="G-R991NWN37F",key="vk_analytics_consent_v1";
+ if(location.protocol!=="https:"||!hosts.includes(location.hostname)||window.vkAnalytics)return;
+ const strings={en:["Optional analytics","Allow Google Analytics to measure site usage? Calculators work without it.","Accept","Decline","Analytics settings","Google privacy policy"],ru:["Необязательная аналитика","Разрешить Google Analytics измерять использование сайта? Калькуляторы работают и без неё.","Разрешить","Отклонить","Настройки аналитики","Политика Google"],uk:["Необов’язкова аналітика","Дозволити Google Analytics вимірювати використання сайту? Калькулятори працюють і без неї.","Дозволити","Відхилити","Налаштування аналітики","Політика Google"],fr:["Statistiques facultatives","Autoriser Google Analytics à mesurer l’utilisation du site ? Les calculateurs fonctionnent sans cela.","Accepter","Refuser","Paramètres statistiques","Confidentialité Google"],de:["Optionale Analyse","Google Analytics zur Nutzungsmessung erlauben? Die Rechner funktionieren auch ohne Analyse.","Akzeptieren","Ablehnen","Analyseeinstellungen","Google-Datenschutz"]};
+ const read=()=>document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(key+"="))?.slice(key.length+1)||"";
+ const write=v=>{document.cookie=key+"="+v+"; Domain=kramarenko.info; Path=/; Max-Age=15552000; Secure; SameSite=Lax"};
+ const clean=u=>{try{const x=new URL(u);return /^https?:$/.test(x.protocol)?x.origin+x.pathname:""}catch{return ""}};
+ let choice=read(),started=false;
+ if(navigator.globalPrivacyControl===true)choice="no";
+ const disabled="ga-disable-"+id;window[disabled]=choice!=="yes";
+ const ad={ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"};
+ function start(){if(choice!=="yes"||read()!=="yes"||navigator.globalPrivacyControl===true)return;window[disabled]=false;if(started){window.gtag("consent","update",{...ad,analytics_storage:"granted"});return}started=true;
+ window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};
+ window.gtag("consent","default",{...ad,analytics_storage:"denied"});
+ window.gtag("consent","update",{...ad,analytics_storage:"granted"});
+ window.gtag("js",new Date());window.gtag("config",id,{cookie_domain:"auto",allow_google_signals:false,allow_ad_personalization_signals:false,page_location:clean(location.href),page_referrer:clean(document.referrer)});
+ const s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id="+id;document.head.append(s);
+ }
+ function stop(){window[disabled]=true;if(started)window.gtag("consent","update",{...ad,analytics_storage:"denied"});for(const c of document.cookie.split(";")){const n=c.trim().split("=")[0];if(/^_ga(?:_|$)/.test(n)){for(const domain of ["","; Domain=kramarenko.info","; Domain="+location.hostname])document.cookie=n+"=; Path=/; Max-Age=0; Secure; SameSite=Lax"+domain}}}
+ const methods=["gauss","jacobi","seidel","det","inverse","newton","fixed","krylov","lagrange","trap","simpson","sweep"],names=["solve","load_example","compare_methods","export_report","calculation_error"],formats=["json","html","pdf"],categories=["basic","academic","advanced"];
+ window.vkAnalytics={track(name,params={}){if(!started||choice!=="yes"||read()!=="yes"||navigator.globalPrivacyControl===true||!names.includes(name))return;const safe={};if(methods.includes(params.method))safe.method_id=params.method;if(formats.includes(params.format))safe.report_format=params.format;if(categories.includes(params.category))safe.example_category=params.category;window.gtag("event",name,{...safe,page_location:clean(location.href),page_referrer:clean(document.referrer)})}};
+ function mount(){if(document.getElementById("vk-analytics-settings"))return;
+ const box=document.createElement("div"),style=document.createElement("style");style.textContent="#vk-analytics-settings{display:block;margin:12px auto;padding:8px 12px;border:0;background:none;color:inherit;text-decoration:underline;font:13px system-ui;cursor:pointer}#vk-analytics-panel{position:fixed;z-index:9999;bottom:12px;left:12px;right:12px;max-width:500px;margin:auto;padding:14px;border:1px solid #87939a;border-radius:10px;background:Canvas;color:CanvasText;box-shadow:0 4px 20px #0003;font:14px/1.45 system-ui}#vk-analytics-panel[hidden]{display:none!important}#vk-analytics-panel p{margin:6px 0;color:inherit}#vk-analytics-panel .vk-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}#vk-analytics-panel button{flex:1;padding:8px;border:1px solid #87939a;background:Canvas;color:CanvasText;border-radius:6px;font:inherit;cursor:pointer}#vk-analytics-panel a{color:inherit;font-size:12px;text-decoration:underline}@media print{#vk-analytics-panel,#vk-analytics-settings{display:none!important}}";document.head.append(style);
+ const settings=document.createElement("button"),title=document.createElement("strong"),msg=document.createElement("p"),privacy=document.createElement("a"),actions=document.createElement("div"),yes=document.createElement("button"),no=document.createElement("button");
+ box.id="vk-analytics-panel";box.setAttribute("role","region");box.setAttribute("aria-labelledby","vk-analytics-title");title.id="vk-analytics-title";settings.id="vk-analytics-settings";settings.type=yes.type=no.type="button";privacy.href="https://policies.google.com/privacy";privacy.target="_blank";privacy.rel="noopener noreferrer";actions.className="vk-buttons";actions.append(yes,no);box.append(title,msg,privacy,actions);box.hidden=choice==="yes"||choice==="no";document.body.append(settings,box);
+ const translate=()=>{const s=strings[document.documentElement.lang.toLowerCase().split("-")[0]]||strings.en;[title.textContent,msg.textContent,yes.textContent,no.textContent,settings.textContent,privacy.textContent]=s};translate();new MutationObserver(translate).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]});
+ settings.addEventListener("click",()=>{box.hidden=!box.hidden;if(!box.hidden)yes.focus()});
+ yes.addEventListener("click",()=>{if(navigator.globalPrivacyControl===true){choice="no";write("no");stop()}else{choice="yes";write("yes");start()}box.hidden=true;settings.focus()});
+ no.addEventListener("click",()=>{choice="no";write("no");stop();box.hidden=true;settings.focus()});
+ }
+ window.addEventListener("focus",()=>{const next=navigator.globalPrivacyControl===true?"no":read();if(next===choice)return;choice=next;if(choice==="yes")start();else stop();const panel=document.getElementById("vk-analytics-panel");if(panel)panel.hidden=choice==="yes"||choice==="no"});
+ if(choice==="yes")start();else if(navigator.globalPrivacyControl===true)stop();
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",mount,{once:true});else mount();
 })();
