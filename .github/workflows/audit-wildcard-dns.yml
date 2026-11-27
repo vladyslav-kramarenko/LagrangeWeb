@@ -153,3 +153,32 @@ jobs:
               print("CANDIDATE",host,"SOURCES",",".join(in_sources))
           print("UNIQUE CANDIDATES:",len(union))
           PY
+
+      - name: Probe certificate-derived hostnames vs wildcard fallback
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,re,hashlib,html,ssl
+          names=['random-audit-20261126-xy92','joycard','tic-tac-toe','racer','dev.racer',
+                 'dev.lagrange','lagrange','numerical','leo-racer','dev.leo-racer','old','mail','piano']
+          def probe(host):
+              url='https://'+host+'.kramarenko.info/'
+              request=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (Authorized DNS audit; read only)'})
+              try:
+                  with urllib.request.urlopen(request,timeout=12) as response:
+                      raw=response.read(400000)
+                      text=raw.decode('utf-8','replace')
+                      title=re.search(r'<title[^>]*>(.*?)</title>',text,re.I|re.S)
+                      canonical=re.search(r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)',text,re.I)
+                      digest=hashlib.sha256(raw).hexdigest()[:20]
+                      return ('OK',response.status,digest,html.unescape((title.group(1) if title else '')).strip()[:85],
+                          canonical.group(1) if canonical else '',response.url, response.headers.get('server'))
+              except urllib.error.HTTPError as e:return ('HTTP_ERROR',e.code,'','','',url,'')
+              except Exception as e:return ('ERROR',type(e).__name__,str(e)[:65],'','',url,'')
+          baseline=probe(names[0])
+          print('BASELINE',names[0],baseline,flush=True)
+          for label in names[1:]:
+              result=probe(label)
+              match=(result[2]==baseline[2] and result[0]=='OK')
+              print('PROBE',label+'.kramarenko.info','SAME_AS_FALLBACK',match,'DATA',result,flush=True)
+          PY
